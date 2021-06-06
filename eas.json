@@ -1,8 +1,10 @@
 {
   "builds": {
     "android": {
-      "release": {
-        "workflow": "managed"
+      "preview": {
+        "distribution": "internal",
+        "workflow": "managed",
+        "buildType": "apk"
       }
     }
   }
