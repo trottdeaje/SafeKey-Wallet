@@ -1,32 +1,38 @@
 {
   "expo": {
-    "name": "covid-wallet",
-    "slug": "covid-wallet",
+    "name": "SafeKey Wallet",
+    "slug": "safekey-wallet",
     "version": "1.0.0",
+    "owner": "hummer07",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/images/splash.png"
     },
+    "primaryColor": "#ffffff",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+      "buildNumber": "1.0.0",
+      "supportsTablet": true,
+      "bundleIdentifier": "gov.bm.safekey",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to scan your SafeKey QR codes."
       }
     },
+    "android": {
+      "permissions": ["CAMERA"],
+      "versionCode": 2,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "gov.bm.safekey"
+    },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/images/favicon.png"
     }
   }
 }
