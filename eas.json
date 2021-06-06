@@ -5,6 +5,11 @@
         "distribution": "internal",
         "workflow": "managed",
         "buildType": "apk"
+      },
+      "release": {
+        "distribution": "store",
+        "workflow": "managed",
+        "buildType": "app-bundle"
       }
     }
   }
