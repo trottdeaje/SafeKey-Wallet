@@ -22,7 +22,15 @@ const ShowQr = ({ navigation, route }) => {
 
       <TouchableOpacity
         onPress={() => navigation.popToTop()}
-        style={{ backgroundColor: "#1971ef", borderRadius: 15, marginTop: 50 }}
+        style={{
+          backgroundColor: "#1971ef",
+          borderRadius: 15,
+          marginTop: 50,
+          shadowColor: "#470000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          elevation: 2,
+        }}
       >
         <Text
           style={{

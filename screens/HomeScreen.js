@@ -24,7 +24,7 @@ const HomeScreen = ({ navigation }) => {
               fontFamily: "OpenSans_600SemiBold",
               color: "white",
               textAlign: "center",
-              fontSize: 15,
+              fontSize: 17,
             })
           }
         >

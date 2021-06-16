@@ -30,7 +30,11 @@ const styles = StyleSheet.create({
     maxWidth: 500,
     backgroundColor: "#1971ef",
     borderRadius: 10,
-    paddingVertical: 10,
+    paddingVertical: 11,
+    shadowColor: "#470000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    elevation: 2,
   },
   btnText: {
     textAlign: "center",

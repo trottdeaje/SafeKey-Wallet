@@ -22,6 +22,10 @@ const PassInfo = ({ navigation, route }) => {
           width: "100%",
           maxWidth: 350,
           alignSelf: "center",
+          shadowColor: "#470000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          elevation: 2,
         }}
       >
         <Text

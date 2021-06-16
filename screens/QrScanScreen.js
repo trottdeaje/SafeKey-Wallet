@@ -12,6 +12,7 @@ const QrScanScreen = ({ navigation }) => {
   const [scanned, setScanned] = useState(false);
   const [torch, setTorch] = useState(false);
   const [ratioValue, setRatioValue] = useState();
+  const [toastShown, setToastShown] = useState(false);
   const DESIRED_RATIO = "16:9";
   let torchValue;
 
@@ -65,9 +66,14 @@ const QrScanScreen = ({ navigation }) => {
         CommonActions.reset({ index: 0, routes: [{ name: "QR List" }] })
       );
     } else {
-      setTimeout(() => {
+      if (toastShown === true) {
+        setTimeout(() => {
+          setToastShown(false);
+        }, 3000);
+      } else if (toastShown === false) {
+        setToastShown(true);
         Toast.show("Invalid QR Code", {
-          duration: 1000,
+          duration: 3000,
           position: Toast.positions.BOTTOM,
           shadow: false,
           animation: true,
@@ -82,20 +88,9 @@ const QrScanScreen = ({ navigation }) => {
           textStyle: { fontFamily: "OpenSans_600SemiBold", fontSize: 14 },
           textColor: "black",
           backgroundColor: "#fff",
-          onShow: () => {
-            // calls on toast\`s appear animation start
-          },
-          onShown: () => {
-            // calls on toast\`s appear animation end.
-          },
-          onHide: () => {
-            // calls on toast\`s hide animation start.
-          },
-          onHidden: () => {
-            // calls on toast\`s hide animation end.
-          },
         });
-      }, 250);
+      }
+
       setScanned(false);
     }
   };

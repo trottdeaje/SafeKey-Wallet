@@ -23,6 +23,10 @@ const VaxInfo = ({ navigation, route }) => {
           borderRadius: 15,
           width: "100%",
           maxWidth: 350,
+          shadowColor: "#470000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          elevation: 2,
         }}
       >
         <Text

@@ -117,15 +117,10 @@ const home = StyleSheet.create({
     bottom: 20,
     right: 20,
     backgroundColor: "#1971ef",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-
-    elevation: 4,
+    shadowColor: "#470000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    elevation: 3,
   },
 });
 
