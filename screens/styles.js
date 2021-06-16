@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 14,
     marginBottom: 15,
+    fontFamily: "OpenSans_400Regular",
   },
   btn: {
     width: "100%",

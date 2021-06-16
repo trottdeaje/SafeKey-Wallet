@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Platform,
+  Linking,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { styles } from "./styles";
 import { CommonActions } from "@react-navigation/native";
 import Toast from "react-native-root-toast";
 import { Camera } from "expo-camera";
+import Constants from "expo-constants";
+import * as IntentLauncher from "expo-intent-launcher";
 
 const QrScanScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -15,6 +25,20 @@ const QrScanScreen = ({ navigation }) => {
   const [toastShown, setToastShown] = useState(false);
   const DESIRED_RATIO = "16:9";
   let torchValue;
+
+  const pkg = Constants.manifest.releaseChannel
+    ? Constants.manifest.android.package
+    : "host.exp.exponent";
+  const openAppSettings = () => {
+    if (Platform.OS === "ios") {
+      Linking.openURL("app-settings:");
+    } else {
+      IntentLauncher.startActivityAsync(
+        IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+        { data: "package:" + pkg }
+      );
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -27,7 +51,33 @@ const QrScanScreen = ({ navigation }) => {
     return <View />;
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return (
+      <View style={styles.container}>
+        <Text style={styles.info}>
+          No access to camera{"\n"}Please grant camera permission to use this
+          app{"\n"} Click{" "}
+          <Text
+            style={{
+              color: "#0077cc",
+              fontWeight: "bold",
+            }}
+            onPress={() => {
+              Linking.openURL(
+                Platform.OS === "android"
+                  ? "https://support.google.com/android/answer/9431959?hl=en#:~:text=your%20Android%20version.-,Change%20app%20permissions%C2%A0,cannot%20use%20the%20setting%2C%20even%20when%20you%E2%80%99re%20using%20the%20app.%C2%A0,-Change%20permissions%20based"
+                  : "https://support.apple.com/guide/iphone/control-access-to-hardware-features-iph168c4bbd5/ios#:~:text=Review%20or%20change,recently%20used%20either."
+              );
+            }}
+          >
+            here
+          </Text>{" "}
+          to learn more
+        </Text>
+        <TouchableOpacity style={scan.btnPlain} onPress={openAppSettings}>
+          <Text style={scan.btnText}>Open settings</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
 
   prepareRatio = async () => {
@@ -193,6 +243,21 @@ const scan = StyleSheet.create({
     height: 50,
     width: 50,
     padding: 25,
+  },
+
+  btnPlain: {
+    backgroundColor: "#1971ef",
+    borderRadius: 10,
+    paddingVertical: 11,
+    shadowColor: "#470000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    elevation: 2,
+  },
+  btnText: {
+    paddingHorizontal: 20,
+    color: "white",
+    textAlign: "center",
   },
 });
 
