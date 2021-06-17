@@ -49,12 +49,14 @@ const home = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
     marginBottom: 2,
+    color: "#000",
   },
   infoTwo: {
     fontFamily: "OpenSans_400Regular",
     fontSize: 15,
     textAlign: "center",
     marginBottom: 15,
+    color: "#000",
   },
 });
 

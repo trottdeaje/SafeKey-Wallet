@@ -58,6 +58,7 @@ const info = StyleSheet.create({
     fontSize: 19,
     marginBottom: 25,
     alignSelf: "flex-start",
+    color: "#000",
   },
   li: {
     alignSelf: "flex-start",
@@ -68,6 +69,7 @@ const info = StyleSheet.create({
     fontSize: 18,
     textAlign: "left",
     marginLeft: 0,
+    color: "#000",
   },
 });
 

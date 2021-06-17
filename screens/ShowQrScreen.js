@@ -8,7 +8,14 @@ const ShowQr = ({ navigation, route }) => {
   const { typeName, data } = route.params;
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 30 }}>
+      <Text
+        style={{
+          fontSize: 24,
+          fontWeight: "bold",
+          marginBottom: 30,
+          color: "#000",
+        }}
+      >
         {typeName}
       </Text>
       <QRCode

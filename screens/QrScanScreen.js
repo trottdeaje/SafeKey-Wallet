@@ -26,16 +26,13 @@ const QrScanScreen = ({ navigation }) => {
   const DESIRED_RATIO = "16:9";
   let torchValue;
 
-  const pkg = Constants.manifest.releaseChannel
-    ? Constants.manifest.android.package
-    : "host.exp.exponent";
   const openAppSettings = () => {
     if (Platform.OS === "ios") {
       Linking.openURL("app-settings:");
     } else {
       IntentLauncher.startActivityAsync(
         IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
-        { data: "package:" + pkg }
+        { data: "package:" + Constants.manifest.android.package }
       );
     }
   };
@@ -53,9 +50,17 @@ const QrScanScreen = ({ navigation }) => {
   if (hasPermission === false) {
     return (
       <View style={styles.container}>
-        <Text style={styles.info}>
-          No access to camera{"\n"}Please grant camera permission to use this
-          app{"\n"} Click{" "}
+        <Text style={scan.info}>
+          <Image
+            style={{ width: 48, height: 48 }}
+            source={require("../assets/images/nocam.png")}
+          />
+          {"\n"}
+          {"\n"}
+          <Text style={{ fontSize: 18, color: "#000" }}>
+            No access to camera
+          </Text>
+          {"\n"}Please grant camera permissions to use this app{"\n"} Click{" "}
           <Text
             style={{
               color: "#0077cc",
@@ -258,6 +263,14 @@ const scan = StyleSheet.create({
     paddingHorizontal: 20,
     color: "white",
     textAlign: "center",
+  },
+  info: {
+    textAlign: "center",
+    color: "black",
+    fontSize: 15,
+    marginBottom: 15,
+    fontFamily: "OpenSans_400Regular",
+    color: "#000",
   },
 });
 

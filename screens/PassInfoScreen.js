@@ -56,6 +56,7 @@ const info = StyleSheet.create({
     fontSize: 19,
     marginBottom: 16,
     alignSelf: "flex-start",
+    color: "#000",
   },
   li: {
     alignSelf: "flex-start",
@@ -64,6 +65,7 @@ const info = StyleSheet.create({
     lineHeight: 30,
     marginBottom: 30,
     fontSize: 18,
+    color: "#000",
   },
 });
 
