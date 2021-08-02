@@ -1,4 +1,4 @@
-# SafeKey-Wallet
+# SafeKey Wallet
 A QR holder web app for Bermuda's SafeKey's
 
 ![SafeKey Logo](https://i.ibb.co/pRtpJWs/Safekey.png)
