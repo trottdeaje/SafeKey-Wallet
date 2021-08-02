@@ -1,24 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Image, Platform } from "react-native";
+//  Import react-navigation
 import { NavigationContainer } from "@react-navigation/native";
 import {
   createStackNavigator,
   TransitionPresets,
 } from "@react-navigation/stack";
+// Import Firebase
+import * as Analytics from "expo-firebase-analytics";
+// Importing the screens
 import HomeScreen from "./screens/HomeScreen";
+import UploadDocumentScreen from "./screens/UploadDocument/UploadDocumentScreen";
 import QrScanScreen from "./screens/QrScanScreen";
 import QrListScreen from "./screens/QrListScreen";
-import PassInfoScreen from "./screens/PassInfoScreen";
-import VaxInfoScreen from "./screens/VaxInfoScreen";
-import ShowQrScreen from "./screens/ShowQrScreen";
+import PassInfoScreen from "./screens/NoticeSafeKeyScreen";
+import VaxInfoScreen from "./screens/NoticeVaccinationScreen";
+import ShowQrScreenPass from "./screens/ShowSafeKeyQrScreen";
+import ShowQrScreenVax from "./screens/ShowVaccinationQrScreen";
+import NotFound from "./screens/NotFoundScreen";
+import NoCamera from "./screens/NoCameraScreen";
 import Loading from "./screens/Loading";
+// Importing async storage
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { RootSiblingParent } from "react-native-root-siblings";
+// Importing fonts
 import {
   useFonts,
   OpenSans_400Regular,
   OpenSans_600SemiBold,
 } from "@expo-google-fonts/open-sans";
+// Importing Toast
+import { ToastProvider } from "react-native-fast-toast";
+import AppLoading from "expo-app-loading";
+import TagManager from "react-gtm-module";
+
+const tagManagerArgs = {
+  gtmId: "GTM-NV8S5NN",
+};
+
+TagManager.initialize(tagManagerArgs);
 
 const Stack = createStackNavigator();
 
@@ -29,6 +48,26 @@ export default function App() {
     OpenSans_400Regular,
     OpenSans_600SemiBold,
   });
+
+  const config = {
+    screens: {
+      Home: "",
+      "Upload Document": "upload-document",
+      "Scan QR": "qr-scanner",
+      "QR List": "wallet",
+      "SafeKey Notice": "safekey-notice",
+      "Vaccination Notice": "certificate-notice",
+      "SafeKey QR": "safekey",
+      "Vaccination Certificate QR": "vaccination-certificate",
+      NoCamera: "NoCamera",
+      NotFound: "*",
+    },
+  };
+
+  const linking = {
+    prefixes: [],
+    config,
+  };
 
   useEffect(() => {
     async function read() {
@@ -47,10 +86,36 @@ export default function App() {
     read();
   }, []);
 
+  const navigationRef = useRef();
+  const routeNameRef = useRef();
+
   return (
-    <RootSiblingParent>
+    <ToastProvider>
       {fontsLoaded && hasLoaded ? (
-        <NavigationContainer>
+        <NavigationContainer
+          ref={navigationRef}
+          onReady={() =>
+            (routeNameRef.current =
+              navigationRef.current.getCurrentRoute().name)
+          }
+          onStateChange={async () => {
+            const previousRouteName = routeNameRef.current;
+            const currentRouteName =
+              navigationRef.current.getCurrentRoute().name;
+            // console.log(previousRouteName, currentRouteName);
+            if (previousRouteName !== currentRouteName) {
+              // The line below uses the expo-firebase-analytics tracker
+              // https://docs.expo.io/versions/latest/sdk/firebase-analytics/
+              // Change this line to use another Mobile analytics SDK
+              await Analytics.setCurrentScreen(currentRouteName);
+            }
+
+            // Save the current route name for later comparison
+            routeNameRef.current = currentRouteName;
+          }}
+          linking={linking}
+          fallback={<AppLoading />}
+        >
           <Stack.Navigator
             screenOptions={{
               headerTitleStyle: {
@@ -71,8 +136,12 @@ export default function App() {
               component={HomeScreen}
               options={{
                 ...TransitionPresets.ModalSlideFromBottomIOS,
-                headerTitleStyle: { alignSelf: "flex-start" },
-                headerTitle: " Home",
+                headerTitleStyle: {
+                  alignSelf: "flex-start",
+                  fontFamily: "OpenSans_600SemiBold",
+                },
+                title: "SafeKey Wallet",
+                headerTitle: " SafeKey Wallet",
                 cardStyleInterpolator:
                   Platform.OS === "ios"
                     ? ({ current }) => ({
@@ -82,20 +151,34 @@ export default function App() {
               }}
             />
             <Stack.Screen
-              name="QR List"
-              component={QrListScreen}
+              name="Upload Document"
+              component={UploadDocumentScreen}
               options={{
+                title: "Upload Document",
                 animationTypeForReplace: "pop",
                 headerTitleStyle: {
                   alignSelf: "flex-start",
                   fontFamily: "OpenSans_600SemiBold",
                 },
-                headerTitle: " QR List",
+                headerTitle: " Upload your SafeKey",
               }}
             />
             <Stack.Screen
-              options={{ headerTitle: "Scan your SafeKey" }}
+              name="QR List"
+              component={QrListScreen}
+              options={{
+                title: "SafeKey Wallet",
+                animationTypeForReplace: "pop",
+                headerTitleStyle: {
+                  alignSelf: "flex-start",
+                  fontFamily: "OpenSans_600SemiBold",
+                },
+                headerTitle: " SafeKey Wallet",
+              }}
+            />
+            <Stack.Screen
               name="Scan QR"
+              options={{ headerTitle: "Scan your SafeKey" }}
               component={QrScanScreen}
             />
             <Stack.Screen
@@ -110,7 +193,7 @@ export default function App() {
               }}
             />
             <Stack.Screen
-              name="Vaccination Certificate Notice"
+              name="Vaccination Notice"
               component={VaxInfoScreen}
               options={{
                 headerTitle: "Notice",
@@ -120,12 +203,37 @@ export default function App() {
                 },
               }}
             />
-            <Stack.Screen name="Show QR" component={ShowQrScreen} />
+            <Stack.Screen
+              options={{ headerTitle: "Show QR" }}
+              name="SafeKey QR"
+              component={ShowQrScreenPass}
+            />
+            <Stack.Screen
+              options={{ headerTitle: "Show QR" }}
+              name="Vaccination Certificate QR"
+              component={ShowQrScreenVax}
+            />
+            <Stack.Screen
+              options={{
+                headerTitle: "404: Not Found",
+                title: "Page Not Found",
+              }}
+              name="NotFound"
+              component={NotFound}
+            />
+            <Stack.Screen
+              options={{
+                headerTitle: "No Camera Permission",
+                title: "No Camera Permission",
+              }}
+              name="NoCamera"
+              component={NoCamera}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       ) : (
         <Loading />
       )}
-    </RootSiblingParent>
+    </ToastProvider>
   );
 }

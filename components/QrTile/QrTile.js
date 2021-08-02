@@ -3,20 +3,21 @@ import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { removeValue } from "./script";
-import Toast from "react-native-root-toast";
 import { LinearGradient } from "expo-linear-gradient";
+import { useToast } from "react-native-fast-toast";
 
 const QrTile = (props) => {
   const [tileBg, setTileBg] = useState("#000");
   const [tileBgTwo, setTileBgTwo] = useState("#000");
+  const toast = useToast();
 
   useEffect(() => {
     if (props.name == "Vaccination Certificate") {
-      setTileBg("#ea6460");
-      setTileBgTwo("#ff7771");
+      setTileBg("#fc9cc7");
+      setTileBgTwo("#fc9cc7");
     } else if (props.name == "SafeKey") {
       setTileBg("#5299e1");
-      setTileBgTwo("#70b5ff");
+      setTileBgTwo("#66b0ff");
     }
   }, [props.name]);
 
@@ -36,6 +37,7 @@ const QrTile = (props) => {
           shadowColor: "#470000",
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.2,
+          shadowRadius: 5,
           elevation: 2,
         }}
       >
@@ -45,12 +47,7 @@ const QrTile = (props) => {
             flexDirection: "row",
             alignItems: "center",
           }}
-          onPress={() =>
-            navigation.navigate(props.infoScreen, {
-              typeName: props.name,
-              data: props.data,
-            })
-          }
+          onPress={() => navigation.navigate(props.infoScreen)}
         >
           <View style={{ paddingVertical: 15 }}>
             <Text
@@ -68,25 +65,14 @@ const QrTile = (props) => {
             </Text>
           </View>
           <TouchableOpacity
-            onPress={() =>
-              Toast.show("Hold to delete", {
-                duration: Toast.durations.LONG,
-                position: Toast.positions.BOTTOM,
-                shadow: false,
-                animation: true,
-                hideOnPress: true,
-                delay: 0,
-
-                containerStyle: {
-                  borderRadius: 30,
-                  paddingHorizontal: 20,
-                  paddingVertical: 20,
-                },
-                textStyle: { fontFamily: "OpenSans_600SemiBold", fontSize: 14 },
-                textColor: "#121212",
-                backgroundColor: "#f0f0f0",
-              })
-            }
+            onPress={() => {
+              toast.hide(1);
+              toast.show("Hold to delete", {
+                id: 1,
+                type: "normal",
+                duration: 2500,
+              });
+            }}
             onLongPress={() => {
               removeValue(props.type);
               props.removeItem();
