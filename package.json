@@ -41,7 +41,6 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-dropzone": "^11.3.4",
-    "react-gtm-module": "^2.0.11",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
     "react-native-camera": "^3.44.1",
     "react-native-fast-toast": "^2.3.1",

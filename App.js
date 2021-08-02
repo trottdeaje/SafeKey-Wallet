@@ -31,13 +31,6 @@ import {
 // Importing Toast
 import { ToastProvider } from "react-native-fast-toast";
 import AppLoading from "expo-app-loading";
-import TagManager from "react-gtm-module";
-
-const tagManagerArgs = {
-  gtmId: "GTM-NV8S5NN",
-};
-
-TagManager.initialize(tagManagerArgs);
 
 const Stack = createStackNavigator();
 
