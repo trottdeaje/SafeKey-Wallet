@@ -25,7 +25,6 @@ const UploadDocument = ({ navigation }) => {
       let result = await DocumentPicker.getDocumentAsync({
         type: ["image/png", "image/jpeg"],
       });
-      // console.log(result);
       if (result.type !== "cancel") {
         qrcodeParser(result.output[0])
           .then((res) => {
