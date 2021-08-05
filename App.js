@@ -10,7 +10,7 @@ import {
 import * as Analytics from "expo-firebase-analytics";
 // Importing the screens
 import HomeScreen from "./screens/HomeScreen";
-import UploadDocumentScreen from "./screens/UploadDocument/UploadDocumentScreen";
+import UploadDocumentScreen from "./screens/UploadDocumentScreen";
 import QrScanScreen from "./screens/QrScanScreen";
 import QrListScreen from "./screens/QrListScreen";
 import PassInfoScreen from "./screens/NoticeSafeKeyScreen";

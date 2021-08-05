@@ -64,7 +64,6 @@ const VaxInfo = ({ navigation }) => {
               color: "white",
               textAlign: "center",
               fontSize: 18,
-              paddingHorizontal: 100,
               paddingVertical: 10,
             }}
           >

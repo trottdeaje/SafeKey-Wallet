@@ -118,7 +118,7 @@ const ShowQrPass = ({ navigation }) => {
             style={{
               backgroundColor: "#1971ef",
               borderRadius: 15,
-              marginTop: 30,
+              marginTop: 15,
               marginBottom: 25,
               shadowColor: "#470000",
               shadowOffset: { width: 0, height: 2 },

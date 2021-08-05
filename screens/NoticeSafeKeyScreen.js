@@ -45,6 +45,7 @@ const PassInfo = ({ navigation }) => {
           onPress={() => navigation.navigate("SafeKey QR")}
           style={{
             backgroundColor: "#1971ef",
+            marginBottom: 25,
             borderRadius: 15,
             width: "100%",
             maxWidth: 350,
@@ -85,10 +86,10 @@ const info = StyleSheet.create({
   header: {
     fontFamily: "OpenSans_600SemiBold",
     fontSize: 19,
-    marginBottom: 16,
+    marginBottom: 25,
+    marginTop: 25,
     alignSelf: "flex-start",
     color: "#333333",
-    marginTop: 25,
   },
   li: {
     alignSelf: "flex-start",
@@ -97,6 +98,8 @@ const info = StyleSheet.create({
     lineHeight: 30,
     marginBottom: 30,
     fontSize: 18,
+    textAlign: "left",
+    marginLeft: 0,
     color: "#333333",
   },
 });

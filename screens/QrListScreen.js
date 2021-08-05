@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { StackActions } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { MaterialIcons } from "@expo/vector-icons";
 import QrTile from "../components/QrTile/QrTile";
 import { useAssets } from "expo-asset";
 import { styles } from "./styles";
@@ -15,10 +14,7 @@ const QrList = ({ navigation }) => {
   const [passExists, setPassExists] = useState();
   const [vaxExists, setVaxExists] = useState();
 
-  const [assets] = useAssets([
-    require("../assets/images/camera.png"),
-    require("../assets/images/info.png"),
-  ]);
+  const [assets] = useAssets([require("../assets/images/camera.png")]);
 
   const noVaxExists = () => {
     setVaxExists(false);
@@ -162,6 +158,7 @@ const QrList = ({ navigation }) => {
                 style={home.btn}
               >
                 <Image
+                  id="camera"
                   style={{ height: 25, width: 25 }}
                   source={require("../assets/images/camera.png")}
                 />
@@ -175,7 +172,7 @@ const QrList = ({ navigation }) => {
                 {/* <MaterialIcons name="file-upload" size={24} color="white" /> */}
                 <Image
                   style={{ width: 30, height: 30 }}
-                  source={require("../assets/images/img-upload.png")}
+                  source={require("../assets/images/upload.png")}
                 />
               </TouchableOpacity>
             </>
@@ -192,13 +189,13 @@ const home = StyleSheet.create({
   btn: {
     display: "flex",
     flexDirection: "row",
-    width: 70,
-    height: 70,
+    width: 55,
+    height: 55,
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    bottom: 70,
+    bottom: 20,
     right: 20,
     backgroundColor: "#1971ef",
     shadowColor: "#470000",
@@ -210,13 +207,13 @@ const home = StyleSheet.create({
   btnTwo: {
     display: "flex",
     flexDirection: "row",
-    width: 70,
-    height: 70,
+    width: 55,
+    height: 55,
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    bottom: 150,
+    bottom: 85,
     right: 20,
     backgroundColor: "#1971ef",
     shadowColor: "#470000",
