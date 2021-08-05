@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     flexWrap: "wrap",
     width: "100%",
-    marginBottom: 50,
+    marginBottom: 120,
   },
   info: {
     textAlign: "center",

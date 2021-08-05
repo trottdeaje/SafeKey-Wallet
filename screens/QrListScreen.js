@@ -8,11 +8,19 @@ import { styles } from "./styles";
 import AppLoading from "expo-app-loading";
 import Version from "../components/Version/Version";
 
+import {
+  FloatingMenu,
+  MainButton,
+  ChildButton,
+} from "react-floating-button-menu";
+import { Ionicons, Feather } from "@expo/vector-icons";
+
 const QrList = ({ navigation }) => {
   const [vax, setVax] = useState(undefined);
   const [passkey, setPasskey] = useState(undefined);
   const [passExists, setPassExists] = useState();
   const [vaxExists, setVaxExists] = useState();
+  const [isOpen, setIsOpen] = useState(false);
 
   const [assets] = useAssets([require("../assets/images/camera.png")]);
 
@@ -65,7 +73,7 @@ const QrList = ({ navigation }) => {
   }, [vaxExists, passExists]);
 
   return (
-    <>
+    <View style={{ backgroundColor: "#fff", flex: 1 }}>
       {!assets ? (
         <AppLoading />
       ) : (
@@ -150,39 +158,61 @@ const QrList = ({ navigation }) => {
           )}
 
           {!vaxExists ^ !passExists ? (
-            <>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Scan QR");
-                }}
+            <View
+              style={{
+                position: "absolute",
+                bottom: -60,
+                right: 20,
+              }}
+            >
+              <FloatingMenu
+                slideSpeed={500}
+                direction="left"
+                spacing={8}
+                isOpen={isOpen}
                 style={home.btn}
               >
-                <Image
-                  id="camera"
-                  style={{ height: 25, width: 25 }}
-                  source={require("../assets/images/camera.png")}
+                <MainButton
+                  iconResting={<Feather name="plus" size={24} color="white" />}
+                  iconActive={
+                    <Ionicons name="close-outline" size={24} color="white" />
+                  }
+                  background="#1971ef"
+                  onClick={() => setIsOpen(!isOpen)}
+                  size={56}
                 />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Upload Document");
-                }}
-                style={home.btnTwo}
-              >
-                {/* <MaterialIcons name="file-upload" size={24} color="white" /> */}
-                <Image
-                  style={{ width: 30, height: 30 }}
-                  source={require("../assets/images/upload.png")}
+                <ChildButton
+                  icon={
+                    <Image
+                      id="camera"
+                      style={{ height: 20, width: 20 }}
+                      source={require("../assets/images/camera.png")}
+                    />
+                  }
+                  background="#1971ef"
+                  size={40}
+                  onClick={() => navigation.navigate("Scan QR")}
                 />
-              </TouchableOpacity>
-            </>
+                <ChildButton
+                  icon={
+                    <Image
+                      style={{ width: 20, height: 20 }}
+                      source={require("../assets/images/upload.png")}
+                    />
+                  }
+                  background="#1971ef"
+                  size={40}
+                  onClick={() => navigation.navigate("Upload Document")}
+                />
+              </FloatingMenu>
+            </View>
           ) : (
             <Text></Text>
           )}
         </View>
       )}
       <Version />
-    </>
+    </View>
   );
 };
 const home = StyleSheet.create({
