@@ -22,7 +22,10 @@ const QrList = ({ navigation }) => {
   const [vaxExists, setVaxExists] = useState();
   const [isOpen, setIsOpen] = useState(false);
 
-  const [assets] = useAssets([require("../assets/images/camera.png")]);
+  const [assets] = useAssets([
+    require("../assets/images/upload.png"),
+    require("../assets/images/camera.png"),
+  ]);
 
   const noVaxExists = () => {
     setVaxExists(false);

@@ -10,6 +10,7 @@
   "dependencies": {
     "@expo-google-fonts/inter": "^0.1.0",
     "@expo-google-fonts/open-sans": "^0.1.0",
+    "@loadable/component": "^5.15.0",
     "@react-native-async-storage/async-storage": "^1.13.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.9.4",
@@ -60,11 +61,25 @@
     "react-native-webview": "^11.6.5",
     "react-qr-reader": "^2.2.1",
     "react-spinners": "^0.11.0",
+    "resize-observer-polyfill": "^1.5.1",
     "styled-components": "^5.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
-    "@expo/webpack-config": "^0.12.79"
+    "@expo/webpack-config": "^0.13.3",
+    "workbox-webpack-plugin": "^6.1.5",
+    "workbox-background-sync": "^6.1.5",
+    "workbox-broadcast-update": "^6.1.5",
+    "workbox-cacheable-response": "^6.1.5",
+    "workbox-core": "^6.1.5",
+    "workbox-expiration": "^6.1.5",
+    "workbox-google-analytics": "^6.1.5",
+    "workbox-navigation-preload": "^6.1.5",
+    "workbox-precaching": "^6.1.5",
+    "workbox-range-requests": "^6.1.5",
+    "workbox-routing": "^6.1.5",
+    "workbox-strategies": "^6.1.5",
+    "workbox-streams": "^6.1.5"
   },
   "private": true
 }

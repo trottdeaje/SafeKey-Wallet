@@ -35,10 +35,10 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png",
-      "startUrl": "/",
-      "scope": "./",
+      "startUrl": ".",
+      "scope": "/",
       "description": "Conveniently access your SafeKey from your own digital wallet.",
-      "backgroundColor": "#fff",
+      "backgroundColor": "#ffffff",
       "config": {
         "firebase": {
           "appId": "1:702794384577:web:230b825c75a78104358040",

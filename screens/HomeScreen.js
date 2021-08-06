@@ -8,7 +8,12 @@ import { useAssets } from "expo-asset";
 import Version from "../components/Version/Version";
 
 const HomeScreen = ({ navigation }) => {
-  const [assets] = useAssets([require("../assets/images/qr-background.png")]);
+  const [assets] = useAssets([
+    require("../assets/images/qr-background.png"),
+    require("../assets/images/bm-logo.png"),
+    require("../assets/images/nocam.png"),
+    require("../assets/images/file-text.png"),
+  ]);
   const [passExists, setPassExists] = useState(null);
   const [vaxExists, setVaxExists] = useState(null);
 
@@ -56,13 +61,13 @@ const HomeScreen = ({ navigation }) => {
         <AppLoading />
       ) : (
         <View style={home.container}>
-          <Image
-            width="150"
-            height="150"
-            resizeMode="center"
-            style={{ width: 150, height: 150, marginTop: 25 }}
-            source={require("../assets/images/qr-background.png")}
-          />
+          <View>
+            <Image
+              resizeMethod="auto"
+              style={{ height: 150, width: 150, marginTop: 25 }}
+              source={require("../assets/images/qr-background.png")}
+            />
+          </View>
           <Text style={home.info}>No SafeKey's found</Text>
           <Text style={home.infoTwo}>Press Scan or Upload to add one.</Text>
           <TouchableOpacity
