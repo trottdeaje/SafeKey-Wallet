@@ -5,7 +5,8 @@ import { CommonActions } from "@react-navigation/native";
 import * as DocumentPicker from "expo-document-picker";
 import { useToast } from "react-native-fast-toast";
 import { styles } from "./styles";
-import Version from "../components/Version/Version";
+import loadable from "@loadable/component";
+const Version = loadable(() => import("../components/Version/Version"));
 import { PDF_QR_JS } from "pdf-qr";
 import { ClipLoader } from "react-spinners";
 
@@ -39,7 +40,7 @@ const UploadDocument = ({ navigation }) => {
           jsQR: {},
         };
         SetErrorInfo(
-          <ClipLoader size="14" color="#1971ef" style={{ marginTop: 10 }} />
+          <ClipLoader size="14px" color="#1971ef" style={{ marginTop: 10 }} />
         );
 
         PDF_QR_JS.decodeSinglePage(result.uri, pageNr, configs, recordcallback);

@@ -8,9 +8,9 @@ import {
   Linking,
 } from "react-native";
 import { CommonActions } from "@react-navigation/native";
-import { styles } from "./styles";
 import DetectRTC from "detectrtc";
-import Version from "../components/Version/Version";
+import loadable from "@loadable/component";
+const Version = loadable(() => import("../components/Version/Version"));
 
 const NoCamera = ({ navigation }) => {
   const [learnUrl, setLearnUrl] = useState(null);

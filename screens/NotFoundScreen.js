@@ -2,7 +2,8 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { CommonActions } from "@react-navigation/native";
 import { styles } from "./styles";
-import Version from "../components/Version/Version";
+import loadable from "@loadable/component";
+const Version = loadable(() => import("../components/Version/Version"));
 
 const NotFound = ({ navigation }) => {
   return (

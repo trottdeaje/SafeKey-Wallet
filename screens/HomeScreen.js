@@ -5,14 +5,14 @@ import { StackActions } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
 import { styles } from "./styles";
 import { useAssets } from "expo-asset";
-import Version from "../components/Version/Version";
+import loadable from "@loadable/component";
+const Version = loadable(() => import("../components/Version/Version"));
 
 const HomeScreen = ({ navigation }) => {
   const [assets] = useAssets([
     require("../assets/images/qr-background.png"),
     require("../assets/images/bm-logo.png"),
     require("../assets/images/nocam.png"),
-    require("../assets/images/file-text.png"),
   ]);
   const [passExists, setPassExists] = useState(null);
   const [vaxExists, setVaxExists] = useState(null);

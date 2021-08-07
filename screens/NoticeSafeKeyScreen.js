@@ -3,7 +3,8 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 
 import { StackActions } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Version from "../components/Version/Version";
+import loadable from "@loadable/component";
+const Version = loadable(() => import("../components/Version/Version"));
 
 const PassInfo = ({ navigation }) => {
   const [passExists, setPassExists] = useState(null);

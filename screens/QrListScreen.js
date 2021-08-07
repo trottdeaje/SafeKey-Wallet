@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
+import loadable from "@loadable/component";
+const Version = loadable(() => import("../components/Version/Version"));
+const QrTile = loadable(() => import("../components/QrTile/QrTile"));
 import { StackActions } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import QrTile from "../components/QrTile/QrTile";
 import { useAssets } from "expo-asset";
 import { styles } from "./styles";
 import AppLoading from "expo-app-loading";
-import Version from "../components/Version/Version";
 
 import {
   FloatingMenu,

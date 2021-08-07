@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity, Dimensions, Image } from "react-native";
+import { Text, View, TouchableOpacity, Dimensions } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
-import QrReader from "react-qr-reader";
+import loadable from "@loadable/component";
+const QrReader = loadable(() => import("react-qr-reader"));
 import DetectRTC from "detectrtc";
 import { useToast } from "react-native-fast-toast";
 

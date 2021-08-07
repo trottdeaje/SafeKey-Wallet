@@ -4,9 +4,11 @@ import { StackActions } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 import { styles } from "./styles";
-import QRCode from "react-native-qrcode-svg";
+import loadable from "@loadable/component";
+const QRCode = loadable(() => import("react-native-qrcode-svg"));
+const Version = loadable(() => import("../components/Version/Version"));
+
 import AppLoading from "expo-app-loading";
-import Version from "../components/Version/Version";
 
 const ShowQrPass = ({ navigation }) => {
   const [passExists, setPassExists] = useState(null);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { removeValue } from "./script";
 import { LinearGradient } from "expo-linear-gradient";
 import { useToast } from "react-native-fast-toast";
@@ -85,7 +85,7 @@ const QrTile = (props) => {
               flexDirection: "row",
             }}
           >
-            <MaterialIcons name="delete" size={30} color="white" />
+            <FontAwesome5 name="trash" size={20} color="white" />
           </TouchableOpacity>
         </TouchableOpacity>
       </LinearGradient>
