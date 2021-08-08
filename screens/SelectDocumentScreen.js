@@ -10,7 +10,7 @@ const Version = loadable(() => import("../components/Version/Version"));
 import { PDF_QR_JS } from "pdf-qr";
 import { ClipLoader } from "react-spinners";
 
-const UploadDocument = ({ navigation }) => {
+const SelectDocument = ({ navigation }) => {
   const [ErrorInfo, SetErrorInfo] = useState("");
   const toast = useToast();
 
@@ -178,4 +178,4 @@ const upload = StyleSheet.create({
   nfn: {},
 });
 
-export default UploadDocument;
+export default SelectDocument;

@@ -122,6 +122,9 @@ const QrScanScreen = ({ navigation }) => {
           minHeight: 80,
         }}
       >
+        <Text style={{ color: "#f1f1f1", marginBottom: 5, marginTop: 15 }}>
+          Scan your SafeKey Document
+        </Text>
         <Text style={{ color: "#f1f1f1" }}>Keep camera steady</Text>
         <Text
           style={{

@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Image, Platform } from "react-native";
+import {
+  Image,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+} from "react-native";
 import loadable from "@loadable/component";
 //  Import react-navigation
 import { NavigationContainer } from "@react-navigation/native";
@@ -10,14 +17,22 @@ import {
 // Import Firebase
 import * as Analytics from "expo-firebase-analytics";
 // Importing the screens
-const HomeScreen = loadable(() => import("./screens/HomeScreen"));
-const UploadDocumentScreen = loadable(() => import("./screens/UploadDocumentScreen"));
+import HomeScreen from "./screens/HomeScreen";
+const SelectDocumentScreen = loadable(() =>
+  import("./screens/SelectDocumentScreen")
+);
 const QrScanScreen = loadable(() => import("./screens/QrScanScreen"));
 const QrListScreen = loadable(() => import("./screens/QrListScreen"));
 const PassInfoScreen = loadable(() => import("./screens/NoticeSafeKeyScreen"));
-const VaxInfoScreen = loadable(() => import("./screens/NoticeVaccinationScreen"));
-const ShowQrScreenPass = loadable(() => import("./screens/ShowSafeKeyQrScreen"));
-const ShowQrScreenVax = loadable(() => import("./screens/ShowVaccinationQrScreen"));
+const VaxInfoScreen = loadable(() =>
+  import("./screens/NoticeVaccinationScreen")
+);
+const ShowQrScreenPass = loadable(() =>
+  import("./screens/ShowSafeKeyQrScreen")
+);
+const ShowQrScreenVax = loadable(() =>
+  import("./screens/ShowVaccinationQrScreen")
+);
 const NotFound = loadable(() => import("./screens/NotFoundScreen"));
 const NoCamera = loadable(() => import("./screens/NoCameraScreen"));
 import Loading from "./screens/Loading";
@@ -48,7 +63,7 @@ export default function App() {
   const config = {
     screens: {
       Home: "",
-      "Upload Document": "upload-document",
+      "Select Document": "select-document",
       "Scan QR": "qr-scanner",
       "QR List": "wallet",
       "SafeKey Notice": "safekey-notice",
@@ -147,16 +162,16 @@ export default function App() {
               }}
             />
             <Stack.Screen
-              name="Upload Document"
-              component={UploadDocumentScreen}
+              name="Select Document"
+              component={SelectDocumentScreen}
               options={{
-                title: "Upload Document",
+                title: "Select Document",
                 animationTypeForReplace: "pop",
                 headerTitleStyle: {
                   alignSelf: "flex-start",
                   fontFamily: "OpenSans_600SemiBold",
                 },
-                headerTitle: " Upload your SafeKey",
+                headerTitle: " Select your SafeKey Document",
               }}
             />
             <Stack.Screen
@@ -233,6 +248,12 @@ export default function App() {
     </ToastProvider>
   );
 }
+
+const appStyle = StyleSheet.create({
+  button: {
+    display: "none",
+  },
+});
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

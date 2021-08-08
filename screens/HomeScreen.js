@@ -69,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
             />
           </View>
           <Text style={home.info}>No SafeKey's found</Text>
-          <Text style={home.infoTwo}>Press Scan or Upload to add one.</Text>
+          <Text style={home.infoTwo}>Press Scan or Select to add one.</Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Scan QR");
@@ -87,16 +87,16 @@ const HomeScreen = ({ navigation }) => {
                 })
               }
             >
-              Scan
+              Scan Document
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={home.btnOutline}
             onPress={() => {
-              navigation.navigate("Upload Document");
+              navigation.navigate("Select Document");
             }}
           >
-            <Text style={styles.btnTextOutline}>Upload</Text>
+            <Text style={styles.btnTextOutline}>Select Document</Text>
           </TouchableOpacity>
         </View>
       )}

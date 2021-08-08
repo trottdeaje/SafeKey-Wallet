@@ -206,7 +206,7 @@ const QrList = ({ navigation }) => {
                   }
                   background="#1971ef"
                   size={40}
-                  onClick={() => navigation.navigate("Upload Document")}
+                  onClick={() => navigation.navigate("Select Document")}
                 />
               </FloatingMenu>
             </View>
