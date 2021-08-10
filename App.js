@@ -18,10 +18,8 @@ import {
 import * as Analytics from "expo-firebase-analytics";
 // Importing the screens
 import HomeScreen from "./screens/HomeScreen";
-const SelectDocumentScreen = loadable(() =>
-  import("./screens/SelectDocumentScreen")
-);
-const QrScanScreen = loadable(() => import("./screens/QrScanScreen"));
+import SelectDocumentScreen from "./screens/SelectDocumentScreen";
+import QrScanScreen from "./screens/QrScanScreen";
 const QrListScreen = loadable(() => import("./screens/QrListScreen"));
 const PassInfoScreen = loadable(() => import("./screens/NoticeSafeKeyScreen"));
 const VaxInfoScreen = loadable(() =>

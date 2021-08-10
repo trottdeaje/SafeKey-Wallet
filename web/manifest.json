@@ -38,5 +38,38 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "screenshots": [
+    {
+      "src": "/pwa\\screenshot\\screenshot-1.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/pwa\\screenshot\\screenshot-2.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/pwa\\screenshot\\screenshot-3.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "SafeKey",
+      "short_name": "SafeKey",
+      "description": "View your SafeKey",
+      "url": "/safekey",
+      "icons": [{ "src": "/pwa/shortcut/safekey.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Vaccination Certificate",
+      "short_name": "Vaccine",
+      "description": "View your Vaccination Certificate",
+      "url": "/vaccination-certificate",
+      "icons": [{ "src": "/pwa/shortcut/vaccine.png", "sizes": "192x192" }]
+    }
   ]
 }
