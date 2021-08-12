@@ -195,7 +195,10 @@ const QrList = ({ navigation }) => {
                   }
                   background="#1971ef"
                   size={40}
-                  onClick={() => navigation.navigate("Scan QR")}
+                  onClick={() => {
+                    setIsOpen(!isOpen);
+                    navigation.navigate("Scan QR");
+                  }}
                 />
                 <ChildButton
                   icon={
@@ -206,7 +209,10 @@ const QrList = ({ navigation }) => {
                   }
                   background="#1971ef"
                   size={40}
-                  onClick={() => navigation.navigate("Select Document")}
+                  onClick={() => {
+                    setIsOpen(!isOpen);
+                    navigation.navigate("Select Document");
+                  }}
                 />
               </FloatingMenu>
             </View>

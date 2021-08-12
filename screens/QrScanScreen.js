@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity, Dimensions } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+  Linking,
+} from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 import loadable from "@loadable/component";
 const QrReader = loadable(() => import("react-qr-reader"));
 import DetectRTC from "detectrtc";
-import { useToast } from "react-native-fast-toast";
+import { useToast } from "react-native-toast-notifications";
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -53,14 +59,59 @@ const QrScanScreen = ({ navigation }) => {
             let month = parseInt(keywordBMKeyFinal.substr(4, 2), 10);
 
             let date = new Date(year, month - 1, day);
+            let todayDate = new Date();
+
+            if (date.getTime() < todayDate.getTime()) {
+              // If the date is in the past, show a toast
+              toast.show(
+                <View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      Linking.openURL("https://www.gov.bm/safekey");
+                      toast.hide(1);
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#1971ef",
+                        fontWeight: "bold",
+                        textAlign: "center",
+                      }}
+                    >
+                      Your SafeKey has{" "}
+                      <Text style={{ color: "red" }}>expired</Text>
+                    </Text>
+                    <Text style={{ color: "#1971ef", textAlign: "center" }}>
+                      Click here to renew it.
+                    </Text>
+                  </TouchableOpacity>
+                </View>,
+                {
+                  offsetBottom: 50,
+                  id: 1,
+                  position: "bottom",
+                  duration: 0,
+                  type: "normal",
+                  normalColor: "#fff",
+
+                  style: {
+                    borderColor: "#1971ef",
+                    borderWidth: 3,
+                    borderLeftStyle: "solid",
+                  },
+                }
+              );
+              return navigation.goBack();
+            }
+
             let options = {
               weekday: "long",
               year: "numeric",
               month: "long",
               day: "numeric",
             };
-            const dateFinal = date.toLocaleString("en-US", options);
-            await AsyncStorage.setItem("passExpiry", dateFinal);
+            const dateQR = date.toLocaleString("en-US", options);
+            await AsyncStorage.setItem("passExpiry", dateQR);
           } else {
             console.log("parsed date is not a number");
           }
@@ -133,7 +184,7 @@ const QrScanScreen = ({ navigation }) => {
             fontFamily: "OpenSans_600SemiBold",
           }}
         >
-          {invalidQR ? "Invalid QR" : "SCANNING"}
+          {invalidQR ? "INVALID QR" : "SCANNING"}
         </Text>
       </View>
 

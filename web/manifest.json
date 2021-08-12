@@ -5,7 +5,6 @@
   "lang": "en",
   "name": "SafeKey Wallet",
   "scope": "/",
-  "short_name": "SafeKey",
   "start_url": ".",
   "theme_color": "#ffffff",
   "orientation": "portrait",
@@ -59,14 +58,12 @@
   "shortcuts": [
     {
       "name": "SafeKey",
-      "short_name": "SafeKey",
       "description": "View your SafeKey",
       "url": "/safekey",
       "icons": [{ "src": "/pwa/shortcut/safekey.png", "sizes": "192x192" }]
     },
     {
       "name": "Vaccination Certificate",
-      "short_name": "Vaccine",
       "description": "View your Vaccination Certificate",
       "url": "/vaccination-certificate",
       "icons": [{ "src": "/pwa/shortcut/vaccine.png", "sizes": "192x192" }]

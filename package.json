@@ -56,6 +56,7 @@
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-svg": "^12.1.0",
+    "react-native-toast-notifications": "^3.1.0",
     "react-native-unordered-list": "^1.0.4",
     "react-native-web": "^0.16.3",
     "react-native-webview": "^11.6.5",

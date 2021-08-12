@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { removeValue } from "./script";
 import { LinearGradient } from "expo-linear-gradient";
-import { useToast } from "react-native-fast-toast";
+import { useToast } from "react-native-toast-notifications";
 
 const QrTile = (props) => {
   const [tileBg, setTileBg] = useState("#000");

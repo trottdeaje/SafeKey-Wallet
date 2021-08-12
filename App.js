@@ -43,7 +43,7 @@ import {
   OpenSans_600SemiBold,
 } from "@expo-google-fonts/open-sans";
 // Importing Toast
-import { ToastProvider } from "react-native-fast-toast";
+import { ToastProvider } from "react-native-toast-notifications";
 import AppLoading from "expo-app-loading";
 
 const Stack = createStackNavigator();
@@ -99,7 +99,7 @@ export default function App() {
   const routeNameRef = useRef();
 
   return (
-    <ToastProvider>
+    <ToastProvider offsetBottom={70}>
       {fontsLoaded && hasLoaded ? (
         <NavigationContainer
           ref={navigationRef}

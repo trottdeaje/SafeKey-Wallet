@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Linking,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 import * as DocumentPicker from "expo-document-picker";
-import { useToast } from "react-native-fast-toast";
+import { useToast } from "react-native-toast-notifications";
 import { styles } from "./styles";
 import loadable from "@loadable/component";
 const Version = loadable(() => import("../components/Version/Version"));
@@ -66,15 +73,35 @@ const SelectDocument = ({ navigation }) => {
                   let year = parseInt(keywordBMKeyFinal.substr(0, 4), 10);
                   let day = parseInt(keywordBMKeyFinal.substr(6), 10);
                   let month = parseInt(keywordBMKeyFinal.substr(4, 2), 10);
+
                   let date = new Date(year, month - 1, day);
+                  let todayDate = new Date();
+
+                  if (date.getTime() < todayDate.getTime()) {
+                    // If the date is in the past, show a toast
+                    return SetErrorInfo(
+                      <>
+                        <Text>This SafeKey has expired. Visit </Text>
+                        <TouchableOpacity
+                          onPress={() =>
+                            Linking.openURL("https://www.gov.bm/safekey")
+                          }
+                        >
+                          <Text style={{ color: "#1a0dab" }}>here</Text>
+                        </TouchableOpacity>
+                        <Text> to renew it.</Text>
+                      </>
+                    );
+                  }
+
                   let options = {
                     weekday: "long",
                     year: "numeric",
                     month: "long",
                     day: "numeric",
                   };
-                  const dateFinal = date.toLocaleString("en-US", options);
-                  await AsyncStorage.setItem("passExpiry", dateFinal);
+                  const dateQR = date.toLocaleString("en-US", options);
+                  await AsyncStorage.setItem("passExpiry", dateQR);
                 } else {
                   console.log("parsed date is not a number");
                 }
