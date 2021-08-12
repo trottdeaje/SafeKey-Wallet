@@ -1,15 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { FontAwesome5 } from "@expo/vector-icons";
 import { removeValue } from "./script";
 import { LinearGradient } from "expo-linear-gradient";
-import { useToast } from "react-native-toast-notifications";
+import { Ionicons } from "@expo/vector-icons";
 
 const QrTile = (props) => {
   const [tileBg, setTileBg] = useState("#000");
   const [tileBgTwo, setTileBgTwo] = useState("#000");
-  const toast = useToast();
+
+  const myRef = React.createRef();
+
+  const showMenu = () => {
+    myRef.current.style.display = "flex";
+    document.addEventListener("click", hideMenu);
+  };
+
+  const hideMenu = () => {
+    if (myRef.current) {
+      myRef.current.style.display = "none";
+      document.removeEventListener("click", hideMenu);
+    } else return;
+  };
 
   useEffect(() => {
     if (props.name == "Vaccination Certificate") {
@@ -66,16 +78,7 @@ const QrTile = (props) => {
           </View>
           <TouchableOpacity
             onPress={() => {
-              toast.hide(1);
-              toast.show("Hold to delete", {
-                id: 1,
-                type: "normal",
-                duration: 2500,
-              });
-            }}
-            onLongPress={() => {
-              removeValue(props.type);
-              props.removeItem();
+              showMenu();
             }}
             style={{
               height: "100%",
@@ -85,8 +88,23 @@ const QrTile = (props) => {
               flexDirection: "row",
             }}
           >
-            <FontAwesome5 name="trash" size={20} color="white" />
+            <Ionicons name="ios-ellipsis-vertical" size={24} color="white" />
           </TouchableOpacity>
+          <View style={styles.menu} ref={myRef}>
+            <TouchableOpacity
+              onPress={() => {
+                removeValue(props.type);
+                props.removeItem();
+              }}
+              style={styles.menuOptions}
+            >
+              <Text
+                style={{ fontFamily: "OpenSans_400Regular", color: "#dc3545" }}
+              >
+                Delete
+              </Text>
+            </TouchableOpacity>
+          </View>
         </TouchableOpacity>
       </LinearGradient>
     </View>
@@ -99,6 +117,28 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
+  },
+  menu: {
+    display: "none",
+    flexDirection: "column",
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    position: "absolute",
+    right: 40,
+    top: 11,
+    shadowColor: "#470000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 2,
+    zIndex: 10,
+  },
+  menuOptions: {
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

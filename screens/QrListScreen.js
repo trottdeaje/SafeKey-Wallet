@@ -131,8 +131,9 @@ const QrList = ({ navigation }) => {
               <Text style={{ fontSize: 14, color: "#919191" }}>{"\u2022"}</Text>
               <Text style={home.infoPoints}>
                 {" "}
-                When your SafeKey expires, hold the trash icon to delete it. You
-                can then scan your new SafeKey by pressing the camera Icon.
+                When your SafeKey expires, you can add another by first deleting
+                the expired one, then clicking the plus button and selecting
+                either the camera button or the document button.
               </Text>
             </Text>
           </View>
@@ -204,7 +205,7 @@ const QrList = ({ navigation }) => {
                   icon={
                     <Image
                       style={{ width: 20, height: 20 }}
-                      source={require("../assets/images/upload.png")}
+                      source={require("../assets/images/file-text.png")}
                     />
                   }
                   background="#1971ef"

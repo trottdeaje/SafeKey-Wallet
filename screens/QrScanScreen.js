@@ -135,7 +135,7 @@ const QrScanScreen = ({ navigation }) => {
           {
             id: 3,
             type: "success",
-            duration: 5000,
+            duration: 3000,
           }
         );
       } else {

@@ -80,17 +80,40 @@ const SelectDocument = ({ navigation }) => {
                   if (date.getTime() < todayDate.getTime()) {
                     // If the date is in the past, show a toast
                     return SetErrorInfo(
-                      <>
-                        <Text>This SafeKey has expired. Visit </Text>
-                        <TouchableOpacity
-                          onPress={() =>
-                            Linking.openURL("https://www.gov.bm/safekey")
-                          }
-                        >
-                          <Text style={{ color: "#1a0dab" }}>here</Text>
-                        </TouchableOpacity>
-                        <Text> to renew it.</Text>
-                      </>
+                      <View
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <Text style={{ textAlign: "center" }}>
+                          <Text>
+                            This SafeKey has expired. Click the button below to
+                            visit the SafeKey renewal page.{" "}
+                          </Text>
+                          <View
+                            style={{
+                              width: "100%",
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <TouchableOpacity
+                              style={{
+                                borderColor: "#1971ef",
+                                borderWidth: 1,
+                                borderRadius: 8,
+                                paddingVertical: 10,
+                                marginTop: 10,
+                              }}
+                              onPress={() =>
+                                Linking.openURL("https://www.gov.bm/safekey")
+                              }
+                            >
+                              <Text style={{ color: "#1971ef", fontSize: 16 }}>
+                                Renew
+                              </Text>
+                            </TouchableOpacity>
+                          </View>
+                        </Text>
+                      </View>
                     );
                   }
 
@@ -127,7 +150,7 @@ const SelectDocument = ({ navigation }) => {
                 {
                   id: 2,
                   type: "success",
-                  duration: 5000,
+                  duration: 3000,
                 }
               );
             }
