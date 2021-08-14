@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Image,
-  Platform,
-  Text,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-} from "react-native";
+import { Image, Platform, StyleSheet } from "react-native";
 import loadable from "@loadable/component";
 //  Import react-navigation
 import { NavigationContainer } from "@react-navigation/native";
@@ -44,7 +37,6 @@ import {
 } from "@expo-google-fonts/open-sans";
 // Importing Toast
 import { ToastProvider } from "react-native-toast-notifications";
-import AppLoading from "expo-app-loading";
 
 const Stack = createStackNavigator();
 
@@ -123,7 +115,7 @@ export default function App() {
             routeNameRef.current = currentRouteName;
           }}
           linking={linking}
-          fallback={<AppLoading />}
+          fallback={<Loading />}
         >
           <Stack.Navigator
             screenOptions={{
@@ -133,8 +125,9 @@ export default function App() {
               },
               headerRight: () => (
                 <Image
-                  style={{ width: 35, height: 35, margin: 20 }}
-                  source={require("./assets/images/bm-logo.png")}
+                  resizeMethod="auto"
+                  style={{ width: 23, height: 35, margin: 20 }}
+                  source={require("./assets/images/bm-logo.svg")}
                 />
               ),
             }}

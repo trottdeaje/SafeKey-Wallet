@@ -11,9 +11,14 @@ import { CommonActions } from "@react-navigation/native";
 import DetectRTC from "detectrtc";
 import loadable from "@loadable/component";
 const Version = loadable(() => import("../components/Version/Version"));
+import { useAssets } from "expo-asset";
+import Loading from "./Loading";
+import { styles } from "./styles";
 
 const NoCamera = ({ navigation }) => {
   const [learnUrl, setLearnUrl] = useState(null);
+
+  const [assets] = useAssets([require("../assets/images/nocam.png")]);
 
   useEffect(() => {
     DetectRTC.load(function () {
@@ -36,107 +41,91 @@ const NoCamera = ({ navigation }) => {
   }, []);
   return (
     <>
-      <View style={nocam.container}>
-        <Image
-          source={require("../assets/images/nocam.png")}
-          style={nocam.image}
-        />
-        <Text style={nocam.bold}>No access to camera</Text>
-        <Text style={nocam.text}>
-          Please enable camera access in your web browser’s settings then try
-          scanning again.
-        </Text>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              Linking.openURL(learnUrl);
-            }}
-            style={{
-              borderWidth: 1,
-              borderColor: "grey",
-              borderRadius: 5,
-              justifyContent: "center",
-              alignItems: "center",
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-              marginRight: 10,
-            }}
-          >
-            <Text
-              style={{
-                color: "blue",
-                textAlign: "center",
-                alignSelf: "center",
-              }}
-            >
-              Learn more
+      {!assets ? (
+        <Loading />
+      ) : (
+        <>
+          <View style={styles.container}>
+            <Image
+              source={require("../assets/images/nocam.png")}
+              style={nocam.image}
+            />
+            <Text style={[styles.bold, { marginBottom: 15, fontSize: 18 }]}>
+              No access to camera
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.dispatch(
-                CommonActions.reset({ index: 0, routes: [{ name: "QR List" }] })
-              );
-            }}
-            style={nocam.button}
-          >
-            <Text style={{ color: "white", textAlign: "center" }}>Go back</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <Version />
+            <Text
+              style={[styles.text, { textAlign: "center", marginBottom: 10 }]}
+            >
+              Please enable camera access in your web browser’s settings then
+              try scanning again.
+            </Text>
+            <View
+              style={[
+                styles.center,
+                {
+                  flexDirection: "row",
+                },
+              ]}
+            >
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL(learnUrl);
+                }}
+                style={[
+                  styles.center,
+                  {
+                    borderWidth: 1,
+                    borderColor: "grey",
+                    borderRadius: 5,
+                    paddingHorizontal: 10,
+                    paddingVertical: 5,
+                    marginRight: 10,
+                  },
+                ]}
+              >
+                <Text
+                  style={{
+                    color: "blue",
+                  }}
+                >
+                  Learn more
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [{ name: "QR List" }],
+                    })
+                  );
+                }}
+                style={[nocam.button, styles.shadow]}
+              >
+                <Text style={{ color: "white", textAlign: "center" }}>
+                  Go back
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <Version />
+        </>
+      )}
     </>
   );
 };
 
 const nocam = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#470000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    elevation: 2,
-    padding: 15,
-    flex: 1,
-    marginBottom: 50,
-  },
   image: {
     width: 40,
     height: 40,
     marginBottom: 10,
-  },
-  bold: {
-    marginBottom: 15,
-    fontFamily: "OpenSans_600SemiBold",
-    fontSize: 16,
-    color: "#333333",
-    textAlign: "center",
   },
   button: {
     backgroundColor: "#1971ef",
     paddingHorizontal: 15,
     paddingVertical: 5,
     borderRadius: 5,
-    shadowColor: "#470000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 2,
-  },
-  text: {
-    textAlign: "center",
-    fontFamily: "OpenSans_400Regular",
-    color: "#333333",
-    marginBottom: 10,
   },
 });
 

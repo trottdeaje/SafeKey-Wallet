@@ -6,9 +6,9 @@
     "owner": "hummer07",
     "orientation": "portrait",
     "scheme": "safekey",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/images/splash.png"
+      "image": "./assets/splash.png"
     },
     "description": "Conveniently access your SafeKey from your own digital wallet.",
     "primaryColor": "#ffffff",
@@ -28,13 +28,13 @@
       "permissions": ["CAMERA"],
       "versionCode": 3,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "gov.bm.safekey"
     },
     "web": {
-      "favicon": "./assets/images/favicon.png",
+      "favicon": "./assets/favicon.png",
       "startUrl": ".",
       "scope": "/",
       "description": "Conveniently access your SafeKey from your own digital wallet.",

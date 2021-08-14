@@ -7,8 +7,7 @@ import { styles } from "./styles";
 import loadable from "@loadable/component";
 const QRCode = loadable(() => import("react-native-qrcode-svg"));
 const Version = loadable(() => import("../components/Version/Version"));
-
-import AppLoading from "expo-app-loading";
+import Loading from "./Loading";
 
 const ShowQrPass = ({ navigation }) => {
   const [passExists, setPassExists] = useState(null);
@@ -55,48 +54,27 @@ const ShowQrPass = ({ navigation }) => {
   return (
     <>
       {!passkey ? (
-        <AppLoading />
+        <Loading />
       ) : (
         <View style={styles.container}>
-          <Text
-            style={{
-              fontSize: 24,
-              fontWeight: "bold",
-              marginBottom: 30,
-              marginTop: 25,
-              color: "#000",
-            }}
-          >
-            SafeKey
-          </Text>
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+          <Text style={styles.QrHeader}>SafeKey</Text>
+          <View style={styles.center}>
             <View
-              style={{
-                borderWidth: 5,
-                borderColor: "#63acfa",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+              style={[
+                styles.center,
+                {
+                  borderWidth: 5,
+                  borderColor: "#63acfa",
+                },
+              ]}
             >
               <Image
-                style={{
-                  width: 82,
-                  height: 82,
-                  position: "absolute",
-                }}
-                source={require("../assets/images/bm-logo.png")}
+                style={styles.bmQrLogo}
+                source={require("../assets/images/bm-logo.svg")}
               />
               <QRCode
                 value={passkey}
                 size={300}
-                logoSize={82}
-                logo={require("../assets/images/bm-logo.png")}
                 quietZone={10}
                 color={"#121212"}
               />
@@ -104,9 +82,11 @@ const ShowQrPass = ({ navigation }) => {
             {!passExpiry ? (
               <Text></Text>
             ) : (
-              <Text style={{ fontSize: 18, fontWeight: "500", marginTop: 20 }}>
+              <Text style={[styles.bold, { marginTop: 20, fontSize: 18 }]}>
                 Expiry:{" "}
-                <Text style={{ fontWeight: "normal" }}>{passExpiry}</Text>
+                <Text style={[styles.text, { fontSize: 18 }]}>
+                  {passExpiry}
+                </Text>
               </Text>
             )}
           </View>
@@ -117,29 +97,18 @@ const ShowQrPass = ({ navigation }) => {
                 CommonActions.reset({ index: 0, routes: [{ name: "QR List" }] })
               )
             }
-            style={{
-              backgroundColor: "#1971ef",
-              borderRadius: 15,
-              marginTop: 15,
-              marginBottom: 25,
-              shadowColor: "#470000",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.2,
-              shadowRadius: 5,
-              elevation: 2,
-            }}
+            style={[
+              styles.btn,
+              styles.shadow,
+              {
+                backgroundColor: "#1971ef",
+                marginTop: 20,
+                marginBottom: 25,
+                maxWidth: 250,
+              },
+            ]}
           >
-            <Text
-              style={{
-                color: "white",
-                textAlign: "left",
-                fontSize: 18,
-                paddingHorizontal: 100,
-                paddingVertical: 10,
-              }}
-            >
-              Go Back
-            </Text>
+            <Text style={[styles.btnText, { color: "#fff" }]}>Go Back</Text>
           </TouchableOpacity>
         </View>
       )}

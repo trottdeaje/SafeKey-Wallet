@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
+import { styles } from "./styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAssets } from "expo-asset";
+import Loading from "./Loading";
 import loadable from "@loadable/component";
 const Version = loadable(() => import("../components/Version/Version"));
 const QrTile = loadable(() => import("../components/QrTile/QrTile"));
 import { StackActions } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useAssets } from "expo-asset";
-import { styles } from "./styles";
-import AppLoading from "expo-app-loading";
+import {
+  useFonts,
+  OpenSans_400Regular,
+  OpenSans_600SemiBold,
+} from "@expo-google-fonts/open-sans";
 
 import {
   FloatingMenu,
@@ -24,9 +29,14 @@ const QrList = ({ navigation }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [assets] = useAssets([
-    require("../assets/images/upload.png"),
+    require("../assets/images/file-text.png"),
     require("../assets/images/camera.png"),
   ]);
+
+  let [fontsLoaded] = useFonts({
+    OpenSans_400Regular,
+    OpenSans_600SemiBold,
+  });
 
   const noVaxExists = () => {
     setVaxExists(false);
@@ -78,26 +88,27 @@ const QrList = ({ navigation }) => {
 
   return (
     <View style={{ backgroundColor: "#fff", flex: 1 }}>
-      {!assets ? (
-        <AppLoading />
+      {!assets && !fontsLoaded ? (
+        <Loading />
       ) : (
         <View style={styles.containerTop}>
           <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              alignSelf: "center",
-              backgroundColor: "#f9f9f9",
-              padding: 20,
-              paddingBottom: 35,
-              marginBottom: 25,
-              marginTop: 5,
-              width: "100%",
-              maxWidth: 650,
-              borderRadius: 10,
-              borderWidth: 1,
-              borderColor: "#dadada",
-            }}
+            style={[
+              styles.center,
+              {
+                alignSelf: "center",
+                backgroundColor: "#f9f9f9",
+                padding: 20,
+                paddingBottom: 35,
+                marginBottom: 25,
+                marginTop: 5,
+                width: "100%",
+                maxWidth: 650,
+                borderRadius: 10,
+                borderWidth: 1,
+                borderColor: "#dadada",
+              },
+            ]}
           >
             <Text>
               <Text
@@ -113,7 +124,7 @@ const QrList = ({ navigation }) => {
               </Text>
               {"\n"}
               <Text style={{ fontSize: 14, color: "#919191" }}>{"\u2022"}</Text>
-              <Text style={home.infoPoints}>
+              <Text style={qrlist.infoPoints}>
                 {" "}
                 SafeKey Wallet currently supports two QR Codes. Vaccination
                 Certificate & SafeKey.
@@ -121,7 +132,7 @@ const QrList = ({ navigation }) => {
               {"\n"}
               <Text style={{ display: "block" }}> </Text>
               <Text style={{ fontSize: 14, color: "#919191" }}>{"\u2022"}</Text>
-              <Text style={home.infoPoints}>
+              <Text style={qrlist.infoPoints}>
                 {" "}
                 Select the QR you want to present. Read the information on the
                 next screen carefully, then continue.
@@ -129,7 +140,7 @@ const QrList = ({ navigation }) => {
               {"\n"}
               <Text style={{ display: "block" }}> </Text>
               <Text style={{ fontSize: 14, color: "#919191" }}>{"\u2022"}</Text>
-              <Text style={home.infoPoints}>
+              <Text style={qrlist.infoPoints}>
                 {" "}
                 When your SafeKey expires, you can add another by first deleting
                 the expired one, then clicking the plus button and selecting
@@ -175,7 +186,7 @@ const QrList = ({ navigation }) => {
                 direction="left"
                 spacing={8}
                 isOpen={isOpen}
-                style={home.btn}
+                style={(qrlist.btnCircle, styles.shadow)}
               >
                 <MainButton
                   iconResting={<Feather name="plus" size={24} color="white" />}
@@ -226,42 +237,15 @@ const QrList = ({ navigation }) => {
     </View>
   );
 };
-const home = StyleSheet.create({
-  btn: {
-    display: "flex",
-    flexDirection: "row",
+const qrlist = StyleSheet.create({
+  btnCircle: {
     width: 55,
     height: 55,
     borderRadius: 50,
-    alignItems: "center",
-    justifyContent: "center",
     position: "absolute",
     bottom: 20,
     right: 20,
     backgroundColor: "#1971ef",
-    shadowColor: "#470000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  btnTwo: {
-    display: "flex",
-    flexDirection: "row",
-    width: 55,
-    height: 55,
-    borderRadius: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 85,
-    right: 20,
-    backgroundColor: "#1971ef",
-    shadowColor: "#470000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 3,
   },
   infoPoints: {
     fontSize: 10,

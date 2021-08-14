@@ -1,25 +1,21 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  Linking,
-} from "react-native";
+import { View, Text, TouchableOpacity, Image, Linking } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 import * as DocumentPicker from "expo-document-picker";
 import { useToast } from "react-native-toast-notifications";
 import { styles } from "./styles";
 import loadable from "@loadable/component";
+import { useAssets } from "expo-asset";
 const Version = loadable(() => import("../components/Version/Version"));
 import { PDF_QR_JS } from "pdf-qr";
 import { ClipLoader } from "react-spinners";
+import Loading from "./Loading";
 
 const SelectDocument = ({ navigation }) => {
   const [ErrorInfo, SetErrorInfo] = useState("");
   const toast = useToast();
+  const [assets] = useAssets([require("../assets/images/file-text.png")]);
 
   const PickDocument = async () => {
     try {
@@ -47,7 +43,9 @@ const SelectDocument = ({ navigation }) => {
           jsQR: {},
         };
         SetErrorInfo(
-          <ClipLoader size="14px" color="#1971ef" style={{ marginTop: 10 }} />
+          <View style={{ marginTop: 20 }}>
+            <ClipLoader size="14px" color="#1971ef" />
+          </View>
         );
 
         PDF_QR_JS.decodeSinglePage(result.uri, pageNr, configs, recordcallback);
@@ -81,38 +79,47 @@ const SelectDocument = ({ navigation }) => {
                     // If the date is in the past, show a toast
                     return SetErrorInfo(
                       <View
-                        style={{ display: "flex", justifyContent: "center" }}
+                        style={[
+                          styles.center,
+                          {
+                            width: "100%",
+                            maxWidth: 500,
+                            marginTop: 20,
+                            padding: 10,
+                            textAlign: "center",
+                          },
+                        ]}
                       >
-                        <Text style={{ textAlign: "center" }}>
-                          <Text>
-                            This SafeKey has expired. Click the button below to
-                            visit the SafeKey renewal page.{" "}
-                          </Text>
-                          <View
-                            style={{
-                              width: "100%",
-                              display: "flex",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <TouchableOpacity
-                              style={{
-                                borderColor: "#1971ef",
-                                borderWidth: 1,
-                                borderRadius: 8,
-                                paddingVertical: 10,
-                                marginTop: 10,
-                              }}
-                              onPress={() =>
-                                Linking.openURL("https://www.gov.bm/safekey")
-                              }
-                            >
-                              <Text style={{ color: "#1971ef", fontSize: 16 }}>
-                                Renew
-                              </Text>
-                            </TouchableOpacity>
-                          </View>
+                        <Text
+                          style={[
+                            styles.text,
+                            {
+                              color: "red",
+                              fontFamily: "OpenSans_600SemiBold",
+                            },
+                          ]}
+                        >
+                          This SafeKey has expired. Click the button below to
+                          visit the SafeKey renewal page.{" "}
                         </Text>
+
+                        <TouchableOpacity
+                          style={[
+                            styles.btn,
+                            styles.shadow,
+                            styles.btnLine,
+                            {
+                              marginTop: 10,
+                            },
+                          ]}
+                          onPress={() =>
+                            Linking.openURL("https://www.gov.bm/safekey")
+                          }
+                        >
+                          <Text style={[styles.btnText, { color: "#1971ef" }]}>
+                            Renew
+                          </Text>
+                        </TouchableOpacity>
                       </View>
                     );
                   }
@@ -165,67 +172,66 @@ const SelectDocument = ({ navigation }) => {
 
   return (
     <>
-      <View style={styles.container}>
-        <Text style={upload.heading}>
-          Add your SafeKey to your wallet by selecting your{" "}
-          <Text style={{ fontWeight: "bold" }}>SafeKey PDF Document </Text>
-          or{" "}
-          <Text style={{ fontWeight: "bold" }}>
-            Vaccination Certificate PDF Document
-          </Text>
-        </Text>
-        <Text style={upload.info}>Select your PDF Document</Text>
-        <TouchableOpacity style={styles.btn} onPress={PickDocument}>
-          <Text
-            style={{
-              textAlign: "center",
-              color: "white",
-              fontSize: 17,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Image
-              style={{ width: 20, height: 20, marginRight: 8 }}
-              source={require("../assets/images/file-text.png")}
-            />
-            Select
-          </Text>
-        </TouchableOpacity>
-        <Text style={ErrorInfo ? upload.infoError : upload.nfn}>
-          {ErrorInfo ? ErrorInfo : ""}
-        </Text>
-      </View>
-      <Version />
+      {!assets ? (
+        <Loading />
+      ) : (
+        <>
+          <View style={styles.container}>
+            <Text
+              style={{
+                textAlign: "center",
+                marginBottom: 0.5,
+                fontSize: 16,
+                marginBottom: 16,
+                lineHeight: 24,
+              }}
+            >
+              Add your SafeKey to your wallet by selecting your{" "}
+              <Text style={{ fontWeight: "bold" }}>SafeKey PDF Document </Text>
+              or{" "}
+              <Text style={{ fontWeight: "bold" }}>
+                Vaccination Certificate PDF Document
+              </Text>
+            </Text>
+            <Text
+              style={[
+                styles.text,
+                { fontWeight: "bold", marginTop: 15, marginBottom: 15 },
+              ]}
+            >
+              Select your PDF Document
+            </Text>
+            <TouchableOpacity
+              style={[
+                styles.btn,
+                styles.shadow,
+                { backgroundColor: "#1971ef" },
+              ]}
+              onPress={PickDocument}
+            >
+              <Text
+                style={[
+                  styles.center,
+                  {
+                    textAlign: "center",
+                    color: "white",
+                    fontSize: 17,
+                  },
+                ]}
+              >
+                <Image
+                  style={{ width: 20, height: 20, marginRight: 8 }}
+                  source={require("../assets/images/file-text.png")}
+                />
+                Select
+              </Text>
+            </TouchableOpacity>
+            {ErrorInfo ? ErrorInfo : ""}
+          </View>
+          <Version />
+        </>
+      )}
     </>
   );
 };
-
-const upload = StyleSheet.create({
-  info: {
-    textAlign: "center",
-    color: "black",
-    fontSize: 14,
-    marginTop: 20,
-    marginBottom: 10,
-    fontFamily: "OpenSans_400Regular",
-    fontWeight: "bold",
-  },
-  heading: {
-    textAlign: "center",
-    marginBottom: 0.5,
-    fontSize: 16,
-    marginBottom: 16,
-    lineHeight: 24,
-  },
-  infoError: {
-    color: "red",
-    fontWeight: "bold",
-    marginTop: 20,
-    padding: 10,
-  },
-  nfn: {},
-});
-
 export default SelectDocument;

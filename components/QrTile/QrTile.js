@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { removeValue } from "./script";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
-
+import { styles } from "../../screens/styles";
 const QrTile = (props) => {
   const [tileBg, setTileBg] = useState("#000");
   const [tileBgTwo, setTileBgTwo] = useState("#000");
@@ -41,17 +41,15 @@ const QrTile = (props) => {
         start={{ x: 1, y: 0 }}
         end={{ x: 0, y: 0 }}
         colors={[tileBg, tileBgTwo]}
-        style={{
-          width: "100%",
-          marginBottom: 15,
-          paddingLeft: 15,
-          borderRadius: 10,
-          shadowColor: "#470000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.2,
-          shadowRadius: 5,
-          elevation: 2,
-        }}
+        style={[
+          styles.shadow,
+          {
+            width: "100%",
+            marginBottom: 15,
+            paddingLeft: 15,
+            borderRadius: 10,
+          },
+        ]}
       >
         <TouchableOpacity
           style={{
@@ -63,15 +61,12 @@ const QrTile = (props) => {
         >
           <View style={{ paddingVertical: 15 }}>
             <Text
-              style={
-                ([styles.text, styles.name],
-                {
-                  fontFamily: "OpenSans_600SemiBold",
-                  color: "white",
-                  textAlign: "left",
-                  fontSize: 16,
-                })
-              }
+              style={{
+                fontFamily: "OpenSans_600SemiBold",
+                color: "white",
+                textAlign: "left",
+                fontSize: 16,
+              }}
             >
               {props.name}
             </Text>
@@ -80,23 +75,41 @@ const QrTile = (props) => {
             onPress={() => {
               showMenu();
             }}
-            style={{
-              height: "100%",
-              width: 50,
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "row",
-            }}
+            style={[
+              styles.center,
+              {
+                height: "100%",
+                width: 50,
+                flexDirection: "row",
+              },
+            ]}
           >
             <Ionicons name="ios-ellipsis-vertical" size={24} color="white" />
           </TouchableOpacity>
-          <View style={styles.menu} ref={myRef}>
+          <View
+            style={[
+              styles.shadow,
+              {
+                display: "none",
+                flexDirection: "column",
+                backgroundColor: "#fff",
+                borderRadius: 5,
+                position: "absolute",
+                right: 40,
+                top: 11,
+              },
+            ]}
+            ref={myRef}
+          >
             <TouchableOpacity
               onPress={() => {
                 removeValue(props.type);
                 props.removeItem();
               }}
-              style={styles.menuOptions}
+              style={{
+                paddingHorizontal: 20,
+                paddingVertical: 5,
+              }}
             >
               <Text
                 style={{ fontFamily: "OpenSans_400Regular", color: "#dc3545" }}
@@ -110,36 +123,5 @@ const QrTile = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    color: "white",
-  },
-  name: {
-    fontSize: 20,
-  },
-  menu: {
-    display: "none",
-    flexDirection: "column",
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    position: "absolute",
-    right: 40,
-    top: 11,
-    shadowColor: "#470000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 2,
-    zIndex: 10,
-  },
-  menuOptions: {
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
 
 export default QrTile;

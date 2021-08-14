@@ -13,6 +13,7 @@ import loadable from "@loadable/component";
 const QrReader = loadable(() => import("react-qr-reader"));
 import DetectRTC from "detectrtc";
 import { useToast } from "react-native-toast-notifications";
+import { styles } from "./styles";
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -22,7 +23,6 @@ const QrScanScreen = ({ navigation }) => {
   const [facing, setFacing] = useState("environment");
   const [invalidQR, setInvalidQR] = useState(false);
   const [dimensions, setDimensions] = useState({ window, screen });
-  const [CameraPermissions, setCameraPermissions] = useState(null);
   const toast = useToast();
 
   const onChange = ({ window, screen }) => {
@@ -71,15 +71,9 @@ const QrScanScreen = ({ navigation }) => {
                       toast.hide(1);
                     }}
                   >
-                    <Text
-                      style={{
-                        color: "#1971ef",
-                        fontWeight: "bold",
-                        textAlign: "center",
-                      }}
-                    >
-                      Your SafeKey has{" "}
-                      <Text style={{ color: "red" }}>expired</Text>
+                    <Text style={[styles.bold, { color: "#1971ef" }]}>
+                      This SafeKey has{" "}
+                      <Text style={{ color: "red" }}>EXPIRED</Text>
                     </Text>
                     <Text style={{ color: "#1971ef", textAlign: "center" }}>
                       Click here to renew it.
@@ -149,32 +143,34 @@ const QrScanScreen = ({ navigation }) => {
 
   return (
     <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        backgroundColor: "#000",
-        justifyContent: "center",
-      }}
+      style={[
+        styles.container,
+        {
+          backgroundColor: "#000",
+          marginBottom: 0,
+        },
+      ]}
     >
       <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#000",
-          fontSize: 16,
-          lineHeight: 50,
-          textAlign: "center",
-          position: "relative",
-          textAlignVertical: "center",
-          margin: 0,
-          zIndex: 10,
-          fontSize: 16,
-          flex: 1,
-          minHeight: 80,
-        }}
+        style={[
+          styles.center,
+          {
+            backgroundColor: "#000",
+            fontSize: 16,
+            lineHeight: 50,
+            textAlign: "center",
+            position: "relative",
+            textAlignVertical: "center",
+            margin: 0,
+            zIndex: 10,
+            fontSize: 16,
+            flex: 1,
+            minHeight: 80,
+          },
+        ]}
       >
         <Text style={{ color: "#f1f1f1", marginBottom: 5, marginTop: 15 }}>
-          Scan your SafeKey Document
+          Scan your SafeKey Document QR code
         </Text>
         <Text style={{ color: "#f1f1f1" }}>Keep camera steady</Text>
         <Text

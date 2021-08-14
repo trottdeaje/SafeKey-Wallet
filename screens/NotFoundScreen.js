@@ -18,44 +18,25 @@ const NotFound = ({ navigation }) => {
         >
           Oops
         </Text>
-        <Text
-          style={{
-            fontFamily: "OpenSans_400Regular",
-            fontSize: 18,
-            textAlign: "center",
-          }}
-        >
+        <Text style={[styles.text, { textAlign: "center" }]}>
           The page you were looking for was not found.
         </Text>
         <TouchableOpacity
           onPress={() => {
-            //   navigation.navigate("QR List");
             navigation.dispatch(
-              CommonActions.reset({ index: 0, routes: [{ name: "QR List" }] })
+              CommonActions.reset({ index: 0, routes: [{ name: "Home" }] })
             );
           }}
-          style={{
-            backgroundColor: "#1971ef",
-            borderRadius: 15,
-            marginTop: 20,
-            shadowColor: "#470000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.2,
-            shadowRadius: 5,
-            elevation: 2,
-            padding: 5,
-          }}
+          style={[
+            styles.shadow,
+            styles.btn,
+            {
+              backgroundColor: "#1971ef",
+              marginTop: 10,
+            },
+          ]}
         >
-          <Text
-            style={{
-              fontFamily: "OpenSans_400Regular",
-              color: "white",
-              paddingHorizontal: 10,
-              fontSize: 16,
-            }}
-          >
-            Go Back
-          </Text>
+          <Text style={[styles.btnText, { color: "#fff" }]}>Go Back</Text>
         </TouchableOpacity>
       </View>
       <Version />

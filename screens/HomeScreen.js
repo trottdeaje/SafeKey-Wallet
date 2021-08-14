@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { Text, View, TouchableOpacity, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackActions } from "@react-navigation/native";
-import AppLoading from "expo-app-loading";
+import Loading from "./Loading";
 import { styles } from "./styles";
 import { useAssets } from "expo-asset";
 import loadable from "@loadable/component";
@@ -10,9 +10,8 @@ const Version = loadable(() => import("../components/Version/Version"));
 
 const HomeScreen = ({ navigation }) => {
   const [assets] = useAssets([
-    require("../assets/images/qr-background.png"),
-    require("../assets/images/bm-logo.png"),
-    require("../assets/images/nocam.png"),
+    require("../assets/images/qr-background.svg"),
+    require("../assets/images/bm-logo.svg"),
   ]);
   const [passExists, setPassExists] = useState(null);
   const [vaxExists, setVaxExists] = useState(null);
@@ -58,45 +57,72 @@ const HomeScreen = ({ navigation }) => {
   return (
     <>
       {!assets ? (
-        <AppLoading />
+        <Loading />
       ) : (
-        <View style={home.container}>
+        <View
+          style={[
+            styles.container,
+            {
+              paddingBottom: 50,
+            },
+          ]}
+        >
           <View>
             <Image
               resizeMethod="auto"
-              style={{ height: 150, width: 150, marginTop: 25 }}
-              source={require("../assets/images/qr-background.png")}
+              style={{ height: 150, width: 170, marginTop: 25 }}
+              source={require("../assets/images/qr-background.svg")}
             />
           </View>
-          <Text style={home.info}>No SafeKey's found</Text>
-          <Text style={home.infoTwo}>Press Scan or Select to add one.</Text>
+          <Text style={[styles.bold, { marginBottom: 2, fontSize: 18 }]}>
+            No SafeKey's found
+          </Text>
+          <Text
+            style={[
+              styles.text,
+              { marginTop: 0, marginBottom: 15, textAlign: "center" },
+            ]}
+          >
+            Press Scan or Select to add one.
+          </Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Scan QR");
             }}
-            style={styles.btn}
+            style={[
+              styles.btn,
+              styles.shadow,
+              { backgroundColor: "#1971ef", borderWidth: 0 },
+            ]}
           >
             <Text
-              style={
-                (styles.btnText,
+              style={[
+                styles.btnText,
                 {
-                  fontFamily: "OpenSans_600SemiBold",
                   color: "white",
-                  textAlign: "center",
-                  fontSize: 17,
-                })
-              }
+                },
+              ]}
             >
               Scan Document
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={home.btnOutline}
+            style={[
+              styles.btn,
+              styles.shadow,
+              styles.btnLine,
+              {
+                backgroundColor: "#fff",
+                marginTop: 16,
+              },
+            ]}
             onPress={() => {
               navigation.navigate("Select Document");
             }}
           >
-            <Text style={styles.btnTextOutline}>Select Document</Text>
+            <Text style={[styles.btnText, { color: "#1971ef" }]}>
+              Select Document
+            </Text>
           </TouchableOpacity>
         </View>
       )}
@@ -104,60 +130,5 @@ const HomeScreen = ({ navigation }) => {
     </>
   );
 };
-
-const home = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingBottom: 50,
-    marginBottom: 50,
-  },
-  info: {
-    fontFamily: "OpenSans_600SemiBold",
-    fontSize: 18,
-    textAlign: "center",
-    marginBottom: 2,
-    color: "#000",
-  },
-  infoTwo: {
-    fontFamily: "OpenSans_400Regular",
-    fontSize: 15,
-    textAlign: "center",
-    marginBottom: 15,
-    color: "#000",
-  },
-  btn: {
-    width: "100%",
-    maxWidth: 500,
-    backgroundColor: "#1971ef",
-    borderRadius: 10,
-    paddingVertical: 11,
-    shadowColor: "#470000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 2,
-    marginTop: 20,
-    borderWidth: 2.5,
-    borderColor: "#1971ef",
-  },
-  btnOutline: {
-    width: "100%",
-    maxWidth: 500,
-    borderWidth: 2.5,
-    borderColor: "#1971ef",
-    borderRadius: 10,
-    paddingVertical: 11,
-    shadowColor: "#470000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 2,
-    marginTop: 16,
-  },
-});
 
 export default HomeScreen;

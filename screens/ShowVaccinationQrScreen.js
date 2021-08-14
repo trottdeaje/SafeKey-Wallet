@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 import { styles } from "./styles";
 import QRCode from "react-native-qrcode-svg";
-import AppLoading from "expo-app-loading";
+import Loading from "./Loading";
 import loadable from "@loadable/component";
 const Version = loadable(() => import("../components/Version/Version"));
 
@@ -39,42 +39,23 @@ const ShowQrVax = ({ navigation }) => {
   return (
     <>
       {!vax ? (
-        <AppLoading />
+        <Loading />
       ) : (
         <View style={styles.container}>
-          <Text
-            style={{
-              fontSize: 24,
-              fontWeight: "bold",
-              marginBottom: 30,
-              color: "#000",
-              marginTop: 25,
-            }}
-          >
-            Vaccination Certificate
-          </Text>
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+          <Text style={styles.QrHeader}>Vaccination Certificate</Text>
+          <View style={styles.center}>
             <View
-              style={{
-                borderWidth: 5,
-                borderColor: "#fc9cc7",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+              style={[
+                styles.center,
+                {
+                  borderWidth: 5,
+                  borderColor: "#fc9cc7",
+                },
+              ]}
             >
               <Image
-                style={{
-                  width: 82,
-                  height: 82,
-                  position: "absolute",
-                }}
-                source={require("../assets/images/bm-logo.png")}
+                style={styles.bmQrLogo}
+                source={require("../assets/images/bm-logo.svg")}
               />
               <QRCode value={vax} size={300} quietZone={10} color={"#121212"} />
             </View>
@@ -86,29 +67,18 @@ const ShowQrVax = ({ navigation }) => {
                 CommonActions.reset({ index: 0, routes: [{ name: "QR List" }] })
               )
             }
-            style={{
-              backgroundColor: "#1971ef",
-              borderRadius: 15,
-              marginTop: 50,
-              marginBottom: 25,
-              shadowColor: "#470000",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.2,
-              shadowRadius: 5,
-              elevation: 2,
-            }}
+            style={[
+              styles.btn,
+              styles.shadow,
+              {
+                backgroundColor: "#1971ef",
+                marginTop: 30,
+                marginBottom: 25,
+                maxWidth: 250,
+              },
+            ]}
           >
-            <Text
-              style={{
-                color: "white",
-                textAlign: "left",
-                fontSize: 18,
-                paddingHorizontal: 100,
-                paddingVertical: 10,
-              }}
-            >
-              Go Back
-            </Text>
+            <Text style={[styles.btnText, { color: "#fff" }]}>Go Back</Text>
           </TouchableOpacity>
         </View>
       )}
