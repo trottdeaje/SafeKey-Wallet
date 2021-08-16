@@ -1,0 +1,82 @@
+{
+  "background_color": "#ffffff",
+  "description": "Conveniently access your SafeKey from your own digital wallet.",
+  "display": "standalone",
+  "lang": "en",
+  "name": "SafeKey Wallet",
+  "scope": "/",
+  "start_url": ".",
+  "theme_color": "#ffffff",
+  "orientation": "portrait",
+  "related_applications": [
+    {
+      "platform": "itunes",
+      "id": "gov.bm.safekey"
+    },
+    {
+      "platform": "play",
+      "url": "http://play.google.com/store/apps/details?id=gov.bm.safekey",
+      "id": "gov.bm.safekey"
+    }
+  ],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/pwa\\chrome-icon\\chrome-icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa\\chrome-icon\\chrome-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pwa\\chrome-icon\\chrome-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/pwa\\screenshot\\screenshot-1.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/pwa\\screenshot\\screenshot-2.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/pwa\\screenshot\\screenshot-3.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "SafeKey",
+      "description": "View your SafeKey",
+      "url": "/safekey",
+      "icons": [
+        {
+          "src": "/pwa/shortcut/safekey.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Vaccination Certificate",
+      "description": "View your Vaccination Certificate",
+      "url": "/vaccination-certificate",
+      "icons": [
+        {
+          "src": "/pwa/shortcut/vaccine.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
