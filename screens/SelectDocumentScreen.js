@@ -156,13 +156,23 @@ const SelectDocument = ({ navigation }) => {
                 })
               );
               toast.show(
-                keywordKey === "BM.KEY"
-                  ? "SafeKey added"
-                  : "Vaccination Certificate added",
+                keywordKey === "BM.KEY" ? (
+                  <View nativeID="actionBtn">
+                    <Text style={[styles.bold, { color: "#fff" }]}>
+                      SafeKey Added
+                    </Text>
+                  </View>
+                ) : (
+                  <View nativeID="actionBtn">
+                    <Text style={[styles.bold, { color: "#fff" }]}>
+                      Vaccination Certificate Added
+                    </Text>
+                  </View>
+                ),
                 {
-                  id: 2,
+                  id: 3,
                   type: "success",
-                  duration: 3000,
+                  duration: 3500,
                 }
               );
             }

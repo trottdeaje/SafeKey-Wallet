@@ -64,19 +64,23 @@ const QrScanScreen = ({ navigation }) => {
             if (date.getTime() < todayDate.getTime()) {
               // If the date is in the past, show a toast
               toast.show(
-                <View>
+                <View nativeID="actionBtn">
                   <TouchableOpacity
                     onPress={() => {
                       Linking.openURL("https://www.gov.bm/safekey");
                       toast.hide(1);
                     }}
                   >
-                    <Text style={[styles.bold, { color: "#1971ef" }]}>
-                      This SafeKey has{" "}
-                      <Text style={{ color: "red" }}>EXPIRED</Text>
+                    <Text style={[styles.bold, { color: "#fff" }]}>
+                      This SafeKey has expired
                     </Text>
-                    <Text style={{ color: "#1971ef", textAlign: "center" }}>
-                      Click here to renew it.
+                    <Text
+                      style={[
+                        styles.text,
+                        { color: "#fff", textAlign: "center" },
+                      ]}
+                    >
+                      Click here to renew it
                     </Text>
                   </TouchableOpacity>
                 </View>,
@@ -86,13 +90,7 @@ const QrScanScreen = ({ navigation }) => {
                   position: "bottom",
                   duration: 0,
                   type: "normal",
-                  normalColor: "#fff",
-
-                  style: {
-                    borderColor: "#1971ef",
-                    borderWidth: 3,
-                    borderLeftStyle: "solid",
-                  },
+                  normalColor: "#ff4d4d",
                 }
               );
               return navigation.goBack();
@@ -123,13 +121,23 @@ const QrScanScreen = ({ navigation }) => {
           CommonActions.reset({ index: 0, routes: [{ name: "QR List" }] })
         );
         toast.show(
-          keywordKey === "BM.KEY"
-            ? "SafeKey Added"
-            : "Vaccination Certificate Added",
+          keywordKey === "BM.KEY" ? (
+            <View nativeID="actionBtn">
+              <Text style={[styles.bold, { color: "#fff" }]}>
+                SafeKey Added
+              </Text>
+            </View>
+          ) : (
+            <View nativeID="actionBtn">
+              <Text style={[styles.bold, { color: "#fff" }]}>
+                Vaccination Certificate Added
+              </Text>
+            </View>
+          ),
           {
             id: 3,
             type: "success",
-            duration: 3000,
+            duration: 3500,
           }
         );
       } else {

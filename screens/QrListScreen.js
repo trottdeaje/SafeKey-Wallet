@@ -175,6 +175,7 @@ const QrList = ({ navigation }) => {
 
           {!vaxExists ^ !passExists ? (
             <View
+              nativeID="actionBtn"
               style={{
                 position: "absolute",
                 bottom: -60,
