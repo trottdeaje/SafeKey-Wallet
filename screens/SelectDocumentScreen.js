@@ -74,54 +74,59 @@ const SelectDocument = ({ navigation }) => {
 
                   let date = new Date(year, month - 1, day);
                   let todayDate = new Date();
+                  console.log(date.getDate() + " " + todayDate.getDate());
 
                   if (date.getTime() < todayDate.getTime()) {
                     // If the date is in the past, show a toast
-                    return SetErrorInfo(
-                      <View
-                        style={[
-                          styles.center,
-                          {
-                            width: "100%",
-                            maxWidth: 500,
-                            marginTop: 20,
-                            padding: 10,
-                            textAlign: "center",
-                          },
-                        ]}
-                      >
-                        <Text
+                    if (date.getDate() < todayDate.getDate()) {
+                      return SetErrorInfo(
+                        <View
                           style={[
-                            styles.text,
+                            styles.center,
                             {
-                              color: "red",
-                              fontFamily: "OpenSans_600SemiBold",
+                              width: "100%",
+                              maxWidth: 500,
+                              marginTop: 20,
+                              padding: 10,
+                              textAlign: "center",
                             },
                           ]}
                         >
-                          This SafeKey has expired. Click the button below to
-                          visit the SafeKey renewal page.{" "}
-                        </Text>
-
-                        <TouchableOpacity
-                          style={[
-                            styles.btn,
-                            styles.shadow,
-                            styles.btnLine,
-                            {
-                              marginTop: 10,
-                            },
-                          ]}
-                          onPress={() =>
-                            Linking.openURL("https://www.gov.bm/safekey")
-                          }
-                        >
-                          <Text style={[styles.btnText, { color: "#1971ef" }]}>
-                            Renew
+                          <Text
+                            style={[
+                              styles.text,
+                              {
+                                color: "red",
+                                fontFamily: "OpenSans_600SemiBold",
+                              },
+                            ]}
+                          >
+                            This SafeKey has expired. Click the button below to
+                            visit the SafeKey renewal page.{" "}
                           </Text>
-                        </TouchableOpacity>
-                      </View>
-                    );
+
+                          <TouchableOpacity
+                            style={[
+                              styles.btn,
+                              styles.shadow,
+                              styles.btnLine,
+                              {
+                                marginTop: 10,
+                              },
+                            ]}
+                            onPress={() =>
+                              Linking.openURL("https://www.gov.bm/safekey")
+                            }
+                          >
+                            <Text
+                              style={[styles.btnText, { color: "#1971ef" }]}
+                            >
+                              Renew
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      );
+                    }
                   }
 
                   let options = {

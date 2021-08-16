@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 const Version = () => {
   return (
     <View style={VersionStyle.container}>
-      <Text style={VersionStyle.text}>Version: 1.1.1</Text>
+      <Text style={VersionStyle.text}>Version: 1.1.2</Text>
     </View>
   );
 };
