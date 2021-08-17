@@ -64,7 +64,7 @@ const QrScanScreen = ({ navigation }) => {
             if (date.getTime() < todayDate.getTime()) {
               // If the date is in the past, show a toast
               toast.show(
-                <View nativeID="actionBtn">
+                <View>
                   <TouchableOpacity
                     onPress={() => {
                       Linking.openURL("https://www.gov.bm/safekey");
@@ -122,13 +122,13 @@ const QrScanScreen = ({ navigation }) => {
         );
         toast.show(
           keywordKey === "BM.KEY" ? (
-            <View nativeID="actionBtn">
+            <View>
               <Text style={[styles.bold, { color: "#fff" }]}>
                 SafeKey Added
               </Text>
             </View>
           ) : (
-            <View nativeID="actionBtn">
+            <View>
               <Text style={[styles.bold, { color: "#fff" }]}>
                 Vaccination Certificate Added
               </Text>

@@ -157,13 +157,13 @@ const SelectDocument = ({ navigation }) => {
               );
               toast.show(
                 keywordKey === "BM.KEY" ? (
-                  <View nativeID="actionBtn">
+                  <View>
                     <Text style={[styles.bold, { color: "#fff" }]}>
                       SafeKey Added
                     </Text>
                   </View>
                 ) : (
-                  <View nativeID="actionBtn">
+                  <View>
                     <Text style={[styles.bold, { color: "#fff" }]}>
                       Vaccination Certificate Added
                     </Text>
