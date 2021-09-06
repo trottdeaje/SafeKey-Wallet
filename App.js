@@ -168,6 +168,9 @@ export default function App() {
     console.log("👍", "userChoice", result);
     // Reset the deferred prompt variable, since
     // prompt() can only be called once.
+    if (result.outcome === "accepted") {
+      setShowInstallBtn(false);
+    }
     window.deferredPrompt = null;
   };
 
@@ -233,7 +236,11 @@ export default function App() {
                     : undefined,
                 headerRight: () => (
                   <View
-                    style={{ flexDirection: "row-reverse", paddingRight: 20 }}
+                    style={{
+                      flexDirection: "row-reverse",
+                      paddingRight: 20,
+                      alignItems: "center",
+                    }}
                   >
                     <Image
                       resizeMethod="auto"
@@ -256,7 +263,8 @@ export default function App() {
                           {
                             backgroundColor: "#1971ef",
                             marginRight: 20,
-                            paddingHorizontal: 24,
+                            paddingHorizontal: 16,
+                            height: 28,
                             borderRadius: 50,
                           },
                         ]}
@@ -345,6 +353,7 @@ export default function App() {
             />
             <Stack.Screen
               options={{
+                headerTitleAlign: "center",
                 headerTitle: "No Camera Permission",
                 title: "No Camera Permission",
               }}
@@ -434,9 +443,9 @@ export default function App() {
                 Just tap
                 <Image
                   style={{
-                    width: 20,
-                    height: 20,
-                    marginHorizontal: 3,
+                    width: 18,
+                    height: 18,
+                    marginHorizontal: 4,
                     marginBottom: 3,
                   }}
                   source={require("./assets/images/share-min.svg")}
