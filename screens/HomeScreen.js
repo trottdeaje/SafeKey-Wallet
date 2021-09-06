@@ -6,16 +6,18 @@ import Loading from "./Loading";
 import { styles } from "./styles";
 import { useAssets } from "expo-asset";
 import loadable from "@loadable/component";
+
 const Version = loadable(() => import("../components/Version/Version"));
 
 const HomeScreen = ({ navigation }) => {
-  const [assets] = useAssets([
-    require("../assets/images/qr-background.svg"),
-    require("../assets/images/bm-logo.svg"),
-  ]);
   const [passExists, setPassExists] = useState(null);
   const [vaxExists, setVaxExists] = useState(null);
 
+  const [assets] = useAssets([
+    require("../assets/images/qr-background.svg"),
+    require("../assets/images/bm-logo.svg"),
+    require("../assets/images/share-min.svg"),
+  ]);
   useEffect(() => {
     try {
       async function getPasskey() {

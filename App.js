@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Image, Platform, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  Platform,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+} from "react-native";
 import loadable from "@loadable/component";
 //  Import react-navigation
 import { NavigationContainer } from "@react-navigation/native";
@@ -36,20 +43,31 @@ import {
   useFonts,
   OpenSans_400Regular,
   OpenSans_600SemiBold,
+  OpenSans_700Bold,
+  OpenSans_800ExtraBold,
 } from "@expo-google-fonts/open-sans";
 // Importing Toast
 import { ToastProvider } from "react-native-toast-notifications";
-
+// Importing Modal
+import Modal from "react-native-modal";
+import { Ionicons } from "@expo/vector-icons";
 const Stack = createStackNavigator();
 
 import * as serviceWorkerRegistration from "./src/serviceWorkerRegistration";
+import { styles } from "./screens/styles";
 
 export default function App() {
   const [hasLoaded, setHasLoaded] = useState(false);
   const [hasQR, setHasQR] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [devicePlatform, setDevicePlatform] = useState(undefined);
+  const [showInstallBtn, setShowInstallBtn] = useState(false);
+
   let [fontsLoaded] = useFonts({
     OpenSans_400Regular,
     OpenSans_600SemiBold,
+    OpenSans_700Bold,
+    OpenSans_800ExtraBold,
   });
 
   const config = {
@@ -91,6 +109,53 @@ export default function App() {
 
   const navigationRef = useRef();
   const routeNameRef = useRef();
+
+  function getOS() {
+    var userAgent = window.navigator.userAgent,
+      platform = window.navigator.platform,
+      macosPlatforms = ["Macintosh", "MacIntel", "MacPPC", "Mac68K"],
+      windowsPlatforms = ["Win32", "Win64", "Windows", "WinCE"],
+      iosPlatforms = ["iPhone", "iPad", "iPod"],
+      os = null;
+
+    if (macosPlatforms.indexOf(platform) !== -1) {
+      os = "Mac OS";
+    } else if (iosPlatforms.indexOf(platform) !== -1) {
+      os = "iOS";
+    } else if (windowsPlatforms.indexOf(platform) !== -1) {
+      os = "Windows";
+    } else if (/Android/.test(userAgent)) {
+      os = "Android";
+    } else if (!os && /Linux/.test(platform)) {
+      os = "Linux";
+    }
+
+    // return os;
+    setDevicePlatform(os);
+  }
+
+  useEffect(() => {
+    getOS();
+  }, []);
+  useEffect(() => {
+    if (devicePlatform === "iOS") {
+      setShowInstallBtn(true);
+    }
+  });
+
+  // Initialize deferredPrompt for use later to show browser install prompt.
+  let deferredPrompt;
+
+  window.addEventListener("beforeinstallprompt", (e) => {
+    // Prevent the mini-infobar from appearing on mobile
+    e.preventDefault();
+    // Stash the event so it can be triggered later.
+    deferredPrompt = e;
+    // Update UI notify the user they can install the PWA
+    setShowInstallBtn(true);
+    // Optionally, send analytics event that PWA install promo was shown.
+    console.log(`'beforeinstallprompt' event was fired.`);
+  });
 
   return (
     <ToastProvider offsetBottom={70}>
@@ -152,6 +217,53 @@ export default function App() {
                         cardStyle: { opacity: current.progress },
                       })
                     : undefined,
+                headerRight: () => (
+                  <View
+                    style={{ flexDirection: "row-reverse", paddingRight: 20 }}
+                  >
+                    <Image
+                      resizeMethod="auto"
+                      style={{ width: 23, height: 35 }}
+                      source={require("./assets/images/bm-logo.svg")}
+                    />
+                    {showInstallBtn ? (
+                      <TouchableOpacity
+                        onPress={() => {
+                          if (devicePlatform === "iOS") {
+                            setModalVisible(true);
+                          } else if (devicePlatform === "Android") {
+                            // alert("Android");
+                            deferredPrompt.prompt();
+                            // Wait for the user to respond to the prompt
+                            // const { outcome } = await deferredPrompt.userChoice;
+                            // Optionally, send analytics event with outcome of user choice
+                            // console.log(
+                            //   `User response to the install prompt: ${outcome}`
+                            // );
+                            deferredPrompt = null;
+                          } else {
+                            alert("other");
+                          }
+                        }}
+                        style={[
+                          styles.center,
+                          {
+                            backgroundColor: "#1971ef",
+                            marginRight: 20,
+                            paddingHorizontal: 24,
+                            borderRadius: 50,
+                          },
+                        ]}
+                      >
+                        <Text style={[styles.text, { color: "#fff" }]}>
+                          Install
+                        </Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <></>
+                    )}
+                  </View>
+                ),
               }}
             />
             <Stack.Screen
@@ -238,13 +350,119 @@ export default function App() {
       ) : (
         <Loading />
       )}
+      <Modal animationIn="fadeInDownBig" isVisible={isModalVisible}>
+        <View style={styles.center}>
+          <View style={[modalStyle.modalInnerView, styles.center]}>
+            <View style={{ position: "absolute", top: 7, right: 7 }}>
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Ionicons name="close-outline" size={28} color="black" />
+              </TouchableOpacity>
+            </View>
+            <View style={[modalStyle.IconView, styles.center]}>
+              <View style={modalStyle.AppIcon}></View>
+              <View style={modalStyle.AppIcon}></View>
+              <View
+                style={[
+                  modalStyle.AppIcon,
+                  styles.shadow,
+                  {
+                    marginRight: 4,
+                    width: 90,
+                    height: 90,
+                    borderRadius: 5,
+                  },
+                ]}
+              >
+                <Image
+                  source={require("./assets/icon.png")}
+                  style={[
+                    {
+                      borderRadius: 5,
+                      width: 90,
+                      height: 90,
+                    },
+                  ]}
+                />
+              </View>
+
+              <View style={modalStyle.AppIcon}></View>
+              <View style={modalStyle.AppIcon}></View>
+            </View>
+            <Text
+              style={[
+                styles.bold,
+                {
+                  fontSize: 20,
+                  fontFamily: "OpenSans_700Bold",
+                  marginBottom: 20,
+                },
+              ]}
+            >
+              Install SafeKey Wallet
+            </Text>
+            <Text
+              style={[
+                styles.text,
+                {
+                  marginHorizontal: 20,
+                  textAlign: "center",
+                  fontSize: 16,
+                  marginBottom: 20,
+                },
+              ]}
+            >
+              Install this web app on your home screen for quick and easy access
+              when you're on the go.
+            </Text>
+            <View
+              style={[
+                styles.center,
+                {
+                  backgroundColor: "#f9f9f9",
+                  width: "100%",
+                  paddingVertical: 15,
+                },
+              ]}
+            >
+              <Text style={[styles.center, styles.text]}>
+                Just tap
+                <Image
+                  style={{
+                    width: 20,
+                    height: 20,
+                    marginHorizontal: 3,
+                    marginBottom: 3,
+                  }}
+                  source={require("./assets/images/share-min.svg")}
+                />
+                then 'Add to Home Screen'
+              </Text>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ToastProvider>
   );
 }
-
-const appStyle = StyleSheet.create({
-  button: {
-    display: "none",
+const modalStyle = StyleSheet.create({
+  modalInnerView: {
+    maxWidth: 350,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    overflow: "hidden",
+  },
+  IconView: {
+    overflow: "hidden",
+    flexDirection: "row",
+    marginVertical: 30,
+  },
+  AppIcon: {
+    width: 80,
+    height: 80,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 5,
+    marginHorizontal: 4,
+    marginVertical: 8,
   },
 });
 
