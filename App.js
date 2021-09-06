@@ -62,6 +62,7 @@ export default function App() {
   const [isModalVisible, setModalVisible] = useState(false);
   const [devicePlatform, setDevicePlatform] = useState(undefined);
   const [showInstallBtn, setShowInstallBtn] = useState(false);
+  const [btnDisabled, setBtnDisabled] = useState();
 
   let [fontsLoaded] = useFonts({
     OpenSans_400Regular,
@@ -137,9 +138,13 @@ export default function App() {
   useEffect(() => {
     getOS();
   }, []);
+
   useEffect(() => {
     if (devicePlatform === "iOS") {
       setShowInstallBtn(true);
+    } else if (devicePlatform === "Android") {
+      setShowInstallBtn(true);
+      setBtnDisabled(true);
     }
   });
 
@@ -148,7 +153,7 @@ export default function App() {
     // Stash the event so it can be triggered later.
     window.deferredPrompt = event;
     // Update UI notify the user they can install the PWA
-    setShowInstallBtn(true);
+    setBtnDisabled(false);
     // Optionally, send analytics event that PWA install promo was shown.
     console.log(`'beforeinstallprompt' event was fired.`);
   });
@@ -249,6 +254,7 @@ export default function App() {
                     />
                     {showInstallBtn ? (
                       <TouchableOpacity
+                        disabled={btnDisabled}
                         onPress={() => {
                           if (devicePlatform === "iOS") {
                             setModalVisible(true);
@@ -261,15 +267,31 @@ export default function App() {
                         style={[
                           styles.center,
                           {
-                            backgroundColor: "#1971ef",
+                            backgroundColor: btnDisabled
+                              ? "#d8d8d8"
+                              : "#1971ef",
                             marginRight: 20,
-                            paddingHorizontal: 16,
+                            paddingHorizontal: btnDisabled ? 10 : 14,
                             height: 28,
                             borderRadius: 50,
+                            flexDirection: "row",
                           },
                         ]}
                       >
-                        <Text style={[styles.text, { color: "#fff" }]}>
+                        {btnDisabled ? (
+                          <Image
+                            style={{ width: 18, height: 18 }}
+                            source={require("./assets/images/gear.gif")}
+                          />
+                        ) : (
+                          <></>
+                        )}
+                        <Text
+                          style={[
+                            styles.text,
+                            { color: "#fff", marginLeft: btnDisabled ? 4 : 0 },
+                          ]}
+                        >
                           Install
                         </Text>
                       </TouchableOpacity>
@@ -334,12 +356,12 @@ export default function App() {
               }}
             />
             <Stack.Screen
-              options={{ headerTitle: "Show QR" }}
+              options={{ headerTitle: "Show QR", headerTitleAlign: "center" }}
               name="SafeKey QR"
               component={ShowQrScreenPass}
             />
             <Stack.Screen
-              options={{ headerTitle: "Show QR" }}
+              options={{ headerTitle: "Show QR", headerTitleAlign: "center" }}
               name="Vaccination Certificate QR"
               component={ShowQrScreenVax}
             />
