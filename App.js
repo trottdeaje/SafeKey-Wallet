@@ -135,18 +135,19 @@ export default function App() {
     setDevicePlatform(os);
   }
 
-  useEffect(() => {
-    getOS();
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
+    getOS();
+
     if (devicePlatform === "iOS") {
       setShowInstallBtn(true);
+      setBtnDisabled(false);
     } else if (devicePlatform === "Android") {
       setShowInstallBtn(true);
       setBtnDisabled(true);
     }
-  });
+  }, [devicePlatform]);
 
   window.addEventListener("beforeinstallprompt", (event) => {
     console.log("👍", "beforeinstallprompt", event);
@@ -154,6 +155,7 @@ export default function App() {
     window.deferredPrompt = event;
     // Update UI notify the user they can install the PWA
     setBtnDisabled(false);
+    console.log("Is button disabled?: " + btnDisabled);
     // Optionally, send analytics event that PWA install promo was shown.
     console.log(`'beforeinstallprompt' event was fired.`);
   });
@@ -173,11 +175,23 @@ export default function App() {
     console.log("👍", "userChoice", result);
     // Reset the deferred prompt variable, since
     // prompt() can only be called once.
-    if (result.outcome === "accepted") {
-      setShowInstallBtn(false);
-    }
     window.deferredPrompt = null;
   };
+
+  window.addEventListener("appinstalled", () => {
+    // Hide the app-provided install promotion
+    setShowInstallBtn(false);
+    // Clear the deferredPrompt so it can be garbage collected
+    window.deferredPrompt = null;
+    // Optionally, send analytics event to indicate successful install
+    console.log("PWA was installed");
+  });
+
+  // window.addEventListener("load", (event) => {
+  //   setTimeout(() => {
+  //     setBtnDisabled(false);
+  //   }, 10000);
+  // });
 
   return (
     <ToastProvider offsetBottom={70}>
