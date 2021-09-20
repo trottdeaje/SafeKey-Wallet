@@ -32,11 +32,13 @@ const Version = () => {
   }
 
   useEffect(() => {
-    console.log("this ran");
     getOS();
-    console.log();
     if (devicePlatform === "iOS") {
       setShowInstallBtn(true);
+    } else if (devicePlatform === "Android") {
+      return;
+    } else {
+      setShowInstallBtn(false);
     }
   }, [devicePlatform]);
 
