@@ -77,7 +77,7 @@ const HomeScreen = ({ navigation }) => {
             />
           </View>
           <Text style={[styles.bold, { marginBottom: 2, fontSize: 18 }]}>
-            No SafeKey's found
+            No SafeKeys found
           </Text>
           <Text
             style={[

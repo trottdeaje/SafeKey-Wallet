@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import Modal from "react-native-modal";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "../../screens/styles";
 
-const ModalComponent = () => {
-  const [isModalVisible, setModalVisible] = useState();
+const ModalComponent = (props) => {
+  const [showModal, setShowModal] = useState(false);
+  const { show, onClose } = props;
+
+  useEffect(() => {
+    setShowModal(show);
+  }, [show]);
 
   return (
-    <Modal animationIn="fadeInDownBig" isVisible={isModalVisible}>
+    <Modal animationIn="fadeInDownBig" isVisible={showModal}>
       <View style={styles.center}>
         <View style={[modalStyle.modalInnerView, styles.center]}>
           <View style={{ position: "absolute", top: 7, right: 7 }}>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
+            <TouchableOpacity onPress={() => onClose()}>
               <Ionicons name="close-outline" size={28} color="black" />
             </TouchableOpacity>
           </View>
@@ -86,9 +91,9 @@ const ModalComponent = () => {
               Just tap
               <Image
                 style={{
-                  width: 20,
-                  height: 20,
-                  marginHorizontal: 3,
+                  width: 18,
+                  height: 18,
+                  marginHorizontal: 4,
                   marginBottom: 3,
                 }}
                 source={require("../../assets/images/share-min.svg")}
