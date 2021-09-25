@@ -11,6 +11,7 @@ const Version = loadable(() => import("../components/Version/Version"));
 import { PDF_QR_JS } from "pdf-qr";
 import { ClipLoader } from "react-spinners";
 import Loading from "./Loading";
+import * as Analytics from "expo-firebase-analytics";
 
 const SelectDocument = ({ navigation }) => {
   const [ErrorInfo, SetErrorInfo] = useState("");
@@ -53,7 +54,7 @@ const SelectDocument = ({ navigation }) => {
         function recordcallback(result) {
           // check if array is empty
           if (result.codes.length === 0) {
-            console.log("No QR Found");
+            console.error("No QR Found");
             SetErrorInfo("SafeKey QR Code not detected. Please try again.");
             return;
           }
@@ -74,8 +75,6 @@ const SelectDocument = ({ navigation }) => {
 
                   let date = new Date(year, month - 1, day);
                   let todayDate = new Date();
-                  console.log(date.getDate() + " " + todayDate.getDate());
-
                   if (date.getTime() < todayDate.getTime()) {
                     // If the date is in the past, show a toast
                     if (date.getDate() < todayDate.getDate()) {
@@ -138,7 +137,7 @@ const SelectDocument = ({ navigation }) => {
                   const dateQR = date.toLocaleString("en-US", options);
                   await AsyncStorage.setItem("passExpiry", dateQR);
                 } else {
-                  console.log("parsed date is not a number");
+                  console.error("parsed date is not a number");
                 }
               }
               // take payload name and set as Key with the value being the parsed QR data. Every payload name is found
@@ -148,6 +147,13 @@ const SelectDocument = ({ navigation }) => {
               let indexEnd = data.indexOf(":", indexStart + 1);
               let keywordKey = data.substring(indexStart, indexEnd);
               await AsyncStorage.setItem(keywordKey, data);
+              Analytics.logEvent("DocumentAdded", {
+                type:
+                  keywordKey === "BM.KEY"
+                    ? "SafeKey"
+                    : "Vaccination Certificate",
+                purpose: "User has added their SafeKey document",
+              });
               // Navigate to a different screen while passing the parsed QR data with it
               navigation.dispatch(
                 CommonActions.reset({
@@ -181,7 +187,7 @@ const SelectDocument = ({ navigation }) => {
         }
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -241,7 +247,7 @@ const SelectDocument = ({ navigation }) => {
                 Select
               </Text>
             </TouchableOpacity>
-            {ErrorInfo ? ErrorInfo : ""}
+            <Text>{ErrorInfo ? ErrorInfo : ""}</Text>
           </View>
           <Version />
         </>

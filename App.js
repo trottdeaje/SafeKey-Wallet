@@ -110,7 +110,6 @@ export default function App() {
             const previousRouteName = routeNameRef.current;
             const currentRouteName =
               navigationRef.current.getCurrentRoute().name;
-            // console.log(previousRouteName, currentRouteName);
             if (previousRouteName !== currentRouteName) {
               // The line below uses the expo-firebase-analytics tracker
               // https://docs.expo.io/versions/latest/sdk/firebase-analytics/
@@ -202,13 +201,17 @@ export default function App() {
             />
             <Stack.Screen
               name="Scan QR"
-              options={{ headerTitle: "Scan your SafeKey" }}
+              options={{
+                headerTitleAlign: "center",
+                headerTitle: "Scan your SafeKey",
+              }}
               component={QrScanScreen}
             />
             <Stack.Screen
               name="SafeKey Notice"
               component={PassInfoScreen}
               options={{
+                headerTitleAlign: "center",
                 headerTitleStyle: {
                   alignSelf: "center",
                   fontFamily: "OpenSans_600SemiBold",
@@ -220,6 +223,7 @@ export default function App() {
               name="Vaccination Notice"
               component={VaxInfoScreen}
               options={{
+                headerTitleAlign: "center",
                 headerTitle: "Notice",
                 headerTitleStyle: {
                   alignSelf: "center",

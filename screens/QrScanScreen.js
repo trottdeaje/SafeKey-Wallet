@@ -11,7 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 import loadable from "@loadable/component";
 const QrReader = loadable(() => import("react-qr-reader"));
-import DetectRTC from "detectrtc";
+import * as Analytics from "expo-firebase-analytics";
 import { useToast } from "react-native-toast-notifications";
 import { styles } from "./styles";
 
@@ -116,6 +116,10 @@ const QrScanScreen = ({ navigation }) => {
         let keywordKey = data.substring(indexStart, indexEnd);
         await AsyncStorage.setItem(keywordKey, data);
         setScanned(true);
+        Analytics.logEvent("DocumentScanned", {
+          type: keywordKey === "BM.KEY" ? "SafeKey" : "Vaccination Certificate",
+          purpose: "User has scanned their SafeKey QR code.",
+        });
         // Navigate to a different screen while passing the parsed QR data with it
         navigation.dispatch(
           CommonActions.reset({ index: 0, routes: [{ name: "QR List" }] })
@@ -196,9 +200,6 @@ const QrScanScreen = ({ navigation }) => {
         facingMode={facing}
         onLoad={() => {
           console.log("QR Reader Loaded");
-          DetectRTC.load(function () {
-            // console.log(DetectRTC.isWebsiteHasWebcamPermissions);
-          });
         }}
         delay={300}
         onError={(error) => {

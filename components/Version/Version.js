@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { styles } from "../../screens/styles";
 import ModalComponent from "../Modal/Modal";
+import * as Analytics from "expo-firebase-analytics";
 
 const Version = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -18,14 +19,18 @@ const Version = () => {
 
     if (macosPlatforms.indexOf(platform) !== -1) {
       os = "Mac OS";
+      setShowInstallBtn(false);
     } else if (iosPlatforms.indexOf(platform) !== -1) {
       os = "iOS";
+      setShowInstallBtn(true);
     } else if (windowsPlatforms.indexOf(platform) !== -1) {
       os = "Windows";
+      setShowInstallBtn(false);
     } else if (/Android/.test(userAgent)) {
       os = "Android";
     } else if (!os && /Linux/.test(platform)) {
       os = "Linux";
+      setShowInstallBtn(false);
     }
     // return os;
     setDevicePlatform(os);
@@ -33,38 +38,30 @@ const Version = () => {
 
   useEffect(() => {
     getOS();
-    if (devicePlatform === "iOS") {
-      setShowInstallBtn(true);
-    } else if (devicePlatform === "Android") {
-      return;
-    } else {
-      setShowInstallBtn(false);
-    }
-  }, [devicePlatform]);
+  }, []);
 
   window.addEventListener("beforeinstallprompt", (event) => {
-    console.log("👍", "beforeinstallprompt", event);
     // Stash the event so it can be triggered later.
     window.deferredPrompt = event;
     // Update UI notify the user they can install the PWA
-    setShowInstallBtn(true);
-    // Optionally, send analytics event that PWA install promo was shown.
-    console.log(`'beforeinstallprompt' event was fired.`);
+    if (devicePlatform === "Android") {
+      setShowInstallBtn(true);
+    }
   });
 
   const handleInstallBtnClick = async () => {
-    console.log("👍", "butInstall-clicked");
+    // console.log("👍", "butInstall-clicked");
     const promptEvent = window.deferredPrompt;
-    if (!promptEvent) {
-      // The deferred prompt isn't available.
-      console.error("👎", "The deferred prompt is not available.");
-      return;
-    }
+    // if (!promptEvent) {
+    //   // The deferred prompt isn't available.
+    //   console.error("👎", "The deferred prompt is not available.");
+    //   return;
+    // }
     // Show the install prompt.
     promptEvent.prompt();
     // Log the result
     const result = await promptEvent.userChoice;
-    console.log("👍", "userChoice", result);
+    // console.log("👍", "userChoice", result);
     // Reset the deferred prompt variable, since
     // prompt() can only be called once.
     window.deferredPrompt = null;
@@ -75,7 +72,10 @@ const Version = () => {
     setShowInstallBtn(false);
     // Clear the deferredPrompt so it can be garbage collected
     window.deferredPrompt = null;
-    // Optionally, send analytics event to indicate successful install
+    // Sending analytics event to indicate successful install
+    Analytics.logEvent("AppInstalled", {
+      purpose: "User has installed PWA",
+    });
     console.log("PWA was installed");
   });
 
@@ -93,23 +93,22 @@ const Version = () => {
   return (
     <>
       <View style={VersionStyle.container}>
-        <Text style={VersionStyle.text}>Version: 1.1.7</Text>
-
+        <Text style={VersionStyle.text}>Version: 1.1.9</Text>
         {showInstallBtn && !isInstalled() ? (
           <TouchableOpacity
             onPress={() => {
-              console.log(devicePlatform);
               if (devicePlatform === "iOS") {
                 setModalVisible(true);
               } else if (devicePlatform === "Android") {
                 handleInstallBtnClick();
               } else {
-                alert("other");
+                console.error(
+                  "Progressive web app installation is not supported on this device"
+                );
               }
             }}
             style={[
               styles.center,
-              styles.shadow,
               {
                 borderRadius: 50,
                 backgroundColor: "#1971ef",
