@@ -4,9 +4,9 @@ import { styles } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAssets } from "expo-asset";
 import Loading from "./Loading";
-import loadable from "@loadable/component";
-const Version = loadable(() => import("../components/Version/Version"));
-const QrTile = loadable(() => import("../components/QrTile/QrTile"));
+
+import Version from "../components/Version/Version";
+import QrTile from "../components/QrTile/QrTile";
 import { StackActions } from "@react-navigation/native";
 import {
   useFonts,

@@ -4,9 +4,9 @@ import { StackActions } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 import { styles } from "./styles";
-import loadable from "@loadable/component";
-const QRCode = loadable(() => import("react-native-qrcode-svg"));
-const Version = loadable(() => import("../components/Version/Version"));
+
+import QRCode from "react-native-qrcode-svg";
+import Version from "../components/Version/Version";
 import Loading from "./Loading";
 
 const ShowQrPass = ({ navigation }) => {

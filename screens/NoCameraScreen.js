@@ -9,8 +9,7 @@ import {
 } from "react-native";
 import { CommonActions } from "@react-navigation/native";
 import DetectRTC from "detectrtc";
-import loadable from "@loadable/component";
-const Version = loadable(() => import("../components/Version/Version"));
+import Version from "../components/Version/Version";
 import { useAssets } from "expo-asset";
 import Loading from "./Loading";
 import { styles } from "./styles";

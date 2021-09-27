@@ -9,8 +9,8 @@ import {
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
-import loadable from "@loadable/component";
-const QrReader = loadable(() => import("react-qr-reader"));
+
+import QrReader from "react-qr-reader";
 import * as Analytics from "expo-firebase-analytics";
 import { useToast } from "react-native-toast-notifications";
 import { styles } from "./styles";

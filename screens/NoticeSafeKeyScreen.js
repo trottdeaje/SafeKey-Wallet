@@ -3,10 +3,9 @@ import { View, TouchableOpacity, Text } from "react-native";
 
 import { StackActions } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import loadable from "@loadable/component";
 import { styles } from "./styles";
 import Checkbox from "expo-checkbox";
-const Version = loadable(() => import("../components/Version/Version"));
+import Version from "../components/Version/Version";
 
 const PassInfo = ({ navigation }) => {
   const [passExists, setPassExists] = useState(null);

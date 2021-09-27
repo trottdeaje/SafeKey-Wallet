@@ -6,8 +6,8 @@ import { CommonActions } from "@react-navigation/native";
 import { styles } from "./styles";
 import QRCode from "react-native-qrcode-svg";
 import Loading from "./Loading";
-import loadable from "@loadable/component";
-const Version = loadable(() => import("../components/Version/Version"));
+
+import Version from "../components/Version/Version";
 
 const ShowQrVax = ({ navigation }) => {
   const [vaxExists, setVaxExists] = useState(null);

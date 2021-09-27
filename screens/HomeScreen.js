@@ -5,9 +5,7 @@ import { StackActions } from "@react-navigation/native";
 import Loading from "./Loading";
 import { styles } from "./styles";
 import { useAssets } from "expo-asset";
-import loadable from "@loadable/component";
-
-const Version = loadable(() => import("../components/Version/Version"));
+import Version from "../components/Version/Version";
 
 const HomeScreen = ({ navigation }) => {
   const [passExists, setPassExists] = useState(null);

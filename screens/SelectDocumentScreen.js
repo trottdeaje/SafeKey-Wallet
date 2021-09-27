@@ -5,9 +5,9 @@ import { CommonActions } from "@react-navigation/native";
 import * as DocumentPicker from "expo-document-picker";
 import { useToast } from "react-native-toast-notifications";
 import { styles } from "./styles";
-import loadable from "@loadable/component";
+
 import { useAssets } from "expo-asset";
-const Version = loadable(() => import("../components/Version/Version"));
+import Version from "../components/Version/Version";
 import { PDF_QR_JS } from "pdf-qr";
 import { ClipLoader } from "react-spinners";
 import Loading from "./Loading";

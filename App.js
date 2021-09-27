@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Image, Platform } from "react-native";
-import loadable from "@loadable/component";
 //  Import react-navigation
 import { NavigationContainer } from "@react-navigation/native";
 import {
@@ -11,23 +10,15 @@ import {
 import * as Analytics from "expo-firebase-analytics";
 // Importing the screens
 import HomeScreen from "./screens/HomeScreen";
-const SelectDocumentScreen = loadable(() =>
-  import("./screens/SelectDocumentScreen")
-);
-const QrScanScreen = loadable(() => import("./screens/QrScanScreen"));
-const QrListScreen = loadable(() => import("./screens/QrListScreen"));
-const PassInfoScreen = loadable(() => import("./screens/NoticeSafeKeyScreen"));
-const VaxInfoScreen = loadable(() =>
-  import("./screens/NoticeVaccinationScreen")
-);
-const ShowQrScreenPass = loadable(() =>
-  import("./screens/ShowSafeKeyQrScreen")
-);
-const ShowQrScreenVax = loadable(() =>
-  import("./screens/ShowVaccinationQrScreen")
-);
-const NotFound = loadable(() => import("./screens/NotFoundScreen"));
-const NoCamera = loadable(() => import("./screens/NoCameraScreen"));
+import SelectDocumentScreen from "./screens/SelectDocumentScreen";
+import QrScanScreen from "./screens/QrScanScreen";
+import QrListScreen from "./screens/QrListScreen";
+import PassInfoScreen from "./screens/NoticeSafeKeyScreen";
+import VaxInfoScreen from "./screens/NoticeVaccinationScreen";
+import ShowQrScreenPass from "./screens/ShowSafeKeyQrScreen";
+import ShowQrScreenVax from "./screens/ShowVaccinationQrScreen";
+import NotFound from "./screens/NotFoundScreen";
+import NoCamera from "./screens/NoCameraScreen";
 import Loading from "./screens/Loading";
 // Importing async storage
 import AsyncStorage from "@react-native-async-storage/async-storage";
