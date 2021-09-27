@@ -4,10 +4,24 @@ import { StackActions } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import loadable from "@loadable/component";
 import { styles } from "./styles";
+import Checkbox from "expo-checkbox";
 const Version = loadable(() => import("../components/Version/Version"));
 
 const VaxInfo = ({ navigation }) => {
   const [vaxExists, setVaxExists] = useState(null);
+  const [isChecked, setChecked] = useState(false);
+  const [checkboxAvailable, setCheckboxAvailable] = useState(false);
+  Checkbox.isAvailableAsync().then((isAvailable) => {
+    if (isAvailable) {
+      setCheckboxAvailable(true);
+    }
+  });
+
+  console.log(isChecked);
+
+  const skipScreenVaccine = async () => {
+    await AsyncStorage.setItem("no_notice_vaccine", true);
+  };
 
   useEffect(() => {
     try {
@@ -47,7 +61,12 @@ const VaxInfo = ({ navigation }) => {
           </Text>
         </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Vaccination Certificate QR")}
+          onPress={() => {
+            if (isChecked) {
+              skipScreenVaccine();
+            }
+            navigation.navigate("Vaccination Certificate QR");
+          }}
           style={[
             styles.btn,
             styles.shadow,
@@ -56,6 +75,16 @@ const VaxInfo = ({ navigation }) => {
         >
           <Text style={[styles.btnText, { color: "#fff" }]}>Continue</Text>
         </TouchableOpacity>
+        <>
+          {checkboxAvailable ? (
+            <View style={[styles.center, { flexDirection: "row" }]}>
+              <Text style={[styles.text, { marginEnd: 8 }]}>
+                Don't show again
+              </Text>
+              <Checkbox value={isChecked} onValueChange={setChecked} />
+            </View>
+          ) : null}
+        </>
       </View>
       <Version />
     </>

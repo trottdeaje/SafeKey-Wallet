@@ -7,7 +7,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 20,
-    marginBottom: 50,
+    borderBottomWidth: 80,
+    borderBottomColor: "#fff",
   },
   containerTop: {
     flex: 1,

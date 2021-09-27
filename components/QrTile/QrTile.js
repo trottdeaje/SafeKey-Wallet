@@ -5,9 +5,40 @@ import { removeValue } from "./script";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "../../screens/styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const QrTile = (props) => {
   const [tileBg, setTileBg] = useState("#000");
   const [tileBgTwo, setTileBgTwo] = useState("#000");
+  const [screenSkipSafeKey, setScreenSkipSafeKey] = useState(false);
+  const [screenSkipVaccineKey, setScreenSkipVaccineKey] = useState(false);
+
+  useEffect(() => {
+    try {
+      async function getSafekeyNoticeStatus() {
+        const value = await AsyncStorage.getItem("no_notice_safekey");
+        if (value !== null) {
+          setScreenSkipSafeKey(value);
+        }
+      }
+      getSafekeyNoticeStatus();
+    } catch (e) {
+      alert(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      async function getVaccineNoticeStatus() {
+        const value = await AsyncStorage.getItem("no_notice_vaccine");
+        if (value !== null) {
+          setScreenSkipVaccineKey(value);
+        }
+      }
+      getVaccineNoticeStatus();
+    } catch (e) {
+      alert(e);
+    }
+  }, []);
 
   const myRef = React.createRef();
 
@@ -57,7 +88,22 @@ const QrTile = (props) => {
             flexDirection: "row",
             alignItems: "center",
           }}
-          onPress={() => navigation.navigate(props.infoScreen)}
+          onPress={() => {
+            if (props.infoScreen === "SafeKey Notice") {
+              if (screenSkipSafeKey) {
+                navigation.navigate("SafeKey QR");
+              } else if (!screenSkipSafeKey) {
+                navigation.navigate("SafeKey Notice");
+              }
+            }
+            if (props.infoScreen === "Vaccination Notice") {
+              if (screenSkipVaccineKey) {
+                navigation.navigate("Vaccination Certificate QR");
+              } else if (!screenSkipVaccineKey) {
+                navigation.navigate("Vaccination Notice");
+              }
+            }
+          }}
         >
           <View style={{ paddingVertical: 15 }}>
             <Text
