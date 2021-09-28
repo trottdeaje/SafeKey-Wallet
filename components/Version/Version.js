@@ -50,18 +50,15 @@ const Version = () => {
   });
 
   const handleInstallBtnClick = async () => {
-    // console.log("👍", "butInstall-clicked");
     const promptEvent = window.deferredPrompt;
-    // if (!promptEvent) {
-    //   // The deferred prompt isn't available.
-    //   console.error("👎", "The deferred prompt is not available.");
-    //   return;
-    // }
+    if (!promptEvent) {
+      // The deferred prompt isn't available.
+      console.error("👎", "The deferred prompt is not available.");
+    }
     // Show the install prompt.
     promptEvent.prompt();
     // Log the result
     const result = await promptEvent.userChoice;
-    // console.log("👍", "userChoice", result);
     // Reset the deferred prompt variable, since
     // prompt() can only be called once.
     window.deferredPrompt = null;
@@ -92,8 +89,16 @@ const Version = () => {
 
   return (
     <>
-      <View style={VersionStyle.container}>
-        <Text style={VersionStyle.text}>Version: 1.2.0</Text>
+      <View
+        style={[
+          VersionStyle.container,
+          {
+            marginBottom: "calc(0em + env(safe-area-inset-bottom))",
+            position: "sticky",
+          },
+        ]}
+      >
+        <Text style={VersionStyle.text}>Version: 1.2.1</Text>
         {showInstallBtn && !isInstalled() ? (
           <TouchableOpacity
             onPress={() => {

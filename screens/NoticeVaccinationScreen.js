@@ -15,9 +15,6 @@ const VaxInfo = ({ navigation }) => {
       setCheckboxAvailable(true);
     }
   });
-
-  console.log(isChecked);
-
   const skipScreenVaccine = async () => {
     await AsyncStorage.setItem("no_notice_vaccine", true);
   };

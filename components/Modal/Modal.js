@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import Modal from "react-native-modal";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "../../screens/styles";
@@ -13,7 +20,13 @@ const ModalComponent = (props) => {
   }, [show]);
 
   return (
-    <Modal animationIn="fadeInDownBig" isVisible={showModal}>
+    <Modal
+      customBackdrop={
+        <SafeAreaView style={modalStyle.customBackdrop}></SafeAreaView>
+      }
+      animationIn="fadeInDownBig"
+      isVisible={showModal}
+    >
       <View style={styles.center}>
         <View style={[modalStyle.modalInnerView, styles.center]}>
           <View style={{ position: "absolute", top: 7, right: 7 }}>
@@ -108,6 +121,12 @@ const ModalComponent = (props) => {
 };
 
 const modalStyle = StyleSheet.create({
+  customBackdrop: {
+    backgroundColor: "black",
+    position: "sticky",
+    height: "100vh",
+    width: "100vw",
+  },
   modalInnerView: {
     maxWidth: 350,
     backgroundColor: "#fff",

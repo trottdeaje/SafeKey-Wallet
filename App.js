@@ -235,6 +235,7 @@ export default function App() {
             <Stack.Screen
               options={{
                 headerTitle: "404: Not Found",
+                headerTitleAlign: "center",
                 title: "Page Not Found",
               }}
               name="NotFound"

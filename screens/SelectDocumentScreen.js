@@ -17,6 +17,7 @@ const SelectDocument = ({ navigation }) => {
   const [ErrorInfo, SetErrorInfo] = useState("");
   const toast = useToast();
   const [assets] = useAssets([require("../assets/images/file-text.png")]);
+  const [fileIsLoading, SetFileIsLoading] = useState(false);
 
   const PickDocument = async () => {
     try {
@@ -48,14 +49,21 @@ const SelectDocument = ({ navigation }) => {
             <ClipLoader size="14px" color="#1971ef" />
           </View>
         );
-
+        SetFileIsLoading(true);
         PDF_QR_JS.decodeSinglePage(result.uri, pageNr, configs, recordcallback);
 
         function recordcallback(result) {
           // check if array is empty
           if (result.codes.length === 0) {
             console.error("No QR Found");
-            SetErrorInfo("SafeKey QR Code not detected. Please try again.");
+            SetErrorInfo(
+              <View style={{ marginTop: 15 }}>
+                <Text style={styles.text}>
+                  SafeKey QR Code not detected. Please try again.
+                </Text>
+              </View>
+            );
+            SetFileIsLoading(false);
             return;
           }
           const handlePDFUpload = async () => {
@@ -78,6 +86,7 @@ const SelectDocument = ({ navigation }) => {
                   if (date.getTime() < todayDate.getTime()) {
                     // If the date is in the past, show a toast
                     if (date.getDate() < todayDate.getDate()) {
+                      SetFileIsLoading(false);
                       return SetErrorInfo(
                         <View
                           style={[
@@ -223,10 +232,11 @@ const SelectDocument = ({ navigation }) => {
               Select your PDF Document
             </Text>
             <TouchableOpacity
+              disabled={fileIsLoading}
               style={[
                 styles.btn,
                 styles.shadow,
-                { backgroundColor: "#1971ef" },
+                { backgroundColor: fileIsLoading ? "#1a73ef80" : "#1971ef" },
               ]}
               onPress={PickDocument}
             >
