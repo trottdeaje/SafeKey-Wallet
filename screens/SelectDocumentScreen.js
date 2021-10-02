@@ -80,61 +80,58 @@ const SelectDocument = ({ navigation }) => {
                   let year = parseInt(keywordBMKeyFinal.substr(0, 4), 10);
                   let day = parseInt(keywordBMKeyFinal.substr(6), 10);
                   let month = parseInt(keywordBMKeyFinal.substr(4, 2), 10);
-
                   let date = new Date(year, month - 1, day);
-                  let todayDate = new Date();
-                  if (date.getTime() < todayDate.getTime()) {
-                    // If the date is in the past, show a toast
-                    if (date.getDate() < todayDate.getDate()) {
-                      SetFileIsLoading(false);
-                      return SetErrorInfo(
-                        <View
+                  const formatYmd = (date) => date.toISOString().slice(0, 10);
+                  let todayDate = Date.parse(formatYmd(new Date()));
+                  var dateRaw = Date.parse(`${year}/${month}/${day}`);
+                  let dayInMilliSeconds = 86400000;
+                  if (dateRaw + dayInMilliSeconds <= todayDate) {
+                    SetFileIsLoading(false);
+                    return SetErrorInfo(
+                      <View
+                        style={[
+                          styles.center,
+                          {
+                            width: "100%",
+                            maxWidth: 500,
+                            marginTop: 20,
+                            padding: 10,
+                            textAlign: "center",
+                          },
+                        ]}
+                      >
+                        <Text
                           style={[
-                            styles.center,
+                            styles.text,
                             {
-                              width: "100%",
-                              maxWidth: 500,
-                              marginTop: 20,
-                              padding: 10,
-                              textAlign: "center",
+                              color: "red",
+                              fontFamily: "OpenSans_600SemiBold",
                             },
                           ]}
                         >
-                          <Text
-                            style={[
-                              styles.text,
-                              {
-                                color: "red",
-                                fontFamily: "OpenSans_600SemiBold",
-                              },
-                            ]}
-                          >
-                            This SafeKey has expired. Click the button below to
-                            visit the SafeKey renewal page.{" "}
-                          </Text>
+                          This SafeKey has expired. Click the button below to
+                          visit the SafeKey renewal page.{" "}
+                        </Text>
 
-                          <TouchableOpacity
-                            style={[
-                              styles.btn,
-                              styles.shadow,
-                              styles.btnLine,
-                              {
-                                marginTop: 10,
-                              },
-                            ]}
-                            onPress={() =>
-                              Linking.openURL("https://www.gov.bm/safekey")
-                            }
-                          >
-                            <Text
-                              style={[styles.btnText, { color: "#1971ef" }]}
-                            >
-                              Renew
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                      );
-                    }
+                        <TouchableOpacity
+                          style={[
+                            styles.btn,
+                            styles.shadow,
+                            styles.btnLine,
+                            {
+                              marginTop: 10,
+                            },
+                          ]}
+                          onPress={() =>
+                            Linking.openURL("https://www.gov.bm/safekey")
+                          }
+                        >
+                          <Text style={[styles.btnText, { color: "#1971ef" }]}>
+                            Renew
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    );
                   }
 
                   let options = {
@@ -145,6 +142,7 @@ const SelectDocument = ({ navigation }) => {
                   };
                   const dateQR = date.toLocaleString("en-US", options);
                   await AsyncStorage.setItem("passExpiry", dateQR);
+                  await AsyncStorage.setItem("passExpiryRaw", `${dateRaw}`);
                 } else {
                   console.error("parsed date is not a number");
                 }
@@ -187,7 +185,8 @@ const SelectDocument = ({ navigation }) => {
                 {
                   id: 3,
                   type: "success",
-                  duration: 3500,
+                  duration: 3000,
+                  animationType: "zoom-in",
                 }
               );
             }
@@ -257,7 +256,13 @@ const SelectDocument = ({ navigation }) => {
                 Select
               </Text>
             </TouchableOpacity>
-            <Text>{ErrorInfo ? ErrorInfo : ""}</Text>
+            <Text>
+              {ErrorInfo ? (
+                ErrorInfo
+              ) : (
+                <View style={{ height: 38, backgroundColor: "#fff" }}></View>
+              )}
+            </Text>
           </View>
           <Version />
         </>

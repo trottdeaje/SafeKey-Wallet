@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text, Linking } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { removeValue } from "./script";
 import { LinearGradient } from "expo-linear-gradient";
@@ -11,6 +11,7 @@ const QrTile = (props) => {
   const [tileBgTwo, setTileBgTwo] = useState("#000");
   const [screenSkipSafeKey, setScreenSkipSafeKey] = useState(false);
   const [screenSkipVaccineKey, setScreenSkipVaccineKey] = useState(false);
+  const [passExpired, setPassExpired] = useState(false);
 
   useEffect(() => {
     try {
@@ -21,6 +22,29 @@ const QrTile = (props) => {
         }
       }
       getSafekeyNoticeStatus();
+    } catch (e) {
+      alert(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      async function getSafekeyExpiry() {
+        const passExpiry = await AsyncStorage.getItem("passExpiryRaw");
+        if (passExpiry !== null) {
+          const formatYmd = (date) => date.toISOString().slice(0, 10);
+          let todayDate = Date.parse(formatYmd(new Date()));
+          let dayInMilliSeconds = 86400000;
+          if (passExpiry > todayDate) {
+            setPassExpired(false);
+          } else if (passExpiry == todayDate) {
+            setPassExpired(false);
+          } else if (parseInt(passExpiry) + dayInMilliSeconds <= todayDate) {
+            setPassExpired(true);
+          }
+        }
+      }
+      getSafekeyExpiry();
     } catch (e) {
       alert(e);
     }
@@ -114,7 +138,30 @@ const QrTile = (props) => {
                 fontSize: 16,
               }}
             >
-              {props.name}
+              {props.name}{" "}
+              {props.name === "SafeKey" && passExpired === true ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    Linking.openURL("https://www.gov.bm/safekey");
+                  }}
+                  style={[
+                    styles.shadow,
+                    {
+                      backgroundColor: "#ae1613",
+                      paddingHorizontal: 5,
+                      paddingVertical: 2,
+                      borderRadius: 5,
+                      marginLeft: 2,
+                      margin: "auto",
+                      borderColor: "#fff",
+                    },
+                  ]}
+                >
+                  Expired
+                </TouchableOpacity>
+              ) : (
+                <Text></Text>
+              )}
             </Text>
           </View>
           <TouchableOpacity

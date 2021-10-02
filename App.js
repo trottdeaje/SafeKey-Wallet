@@ -89,7 +89,7 @@ export default function App() {
   const routeNameRef = useRef();
 
   return (
-    <ToastProvider offsetBottom={55}>
+    <ToastProvider offset={75} swipeEnabled={false}>
       {fontsLoaded && hasLoaded ? (
         <NavigationContainer
           ref={navigationRef}

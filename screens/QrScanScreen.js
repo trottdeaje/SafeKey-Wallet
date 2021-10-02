@@ -52,16 +52,16 @@ const QrScanScreen = ({ navigation }) => {
           let indexEndKey = data.indexOf("/");
           let keywordBMKey = data.substring(indexStartKey, indexEndKey);
           let keywordBMKeyFinal = keywordBMKey.slice(1);
-
           if (!isNaN(keywordBMKeyFinal)) {
             let year = parseInt(keywordBMKeyFinal.substr(0, 4), 10);
             let day = parseInt(keywordBMKeyFinal.substr(6), 10);
             let month = parseInt(keywordBMKeyFinal.substr(4, 2), 10);
-
             let date = new Date(year, month - 1, day);
-            let todayDate = new Date();
-
-            if (date.getTime() < todayDate.getTime()) {
+            const formatYmd = (date) => date.toISOString().slice(0, 10);
+            let todayDate = Date.parse(formatYmd(new Date()));
+            var dateRaw = Date.parse(`${year}/${month}/${day}`);
+            let dayInMilliSeconds = 86400000;
+            if (dateRaw + dayInMilliSeconds <= todayDate) {
               // If the date is in the past, show a toast
               toast.show(
                 <View>
@@ -88,7 +88,7 @@ const QrScanScreen = ({ navigation }) => {
                   offsetBottom: 50,
                   id: 1,
                   position: "bottom",
-                  duration: 0,
+                  duration: 8000,
                   type: "normal",
                   normalColor: "#ff4d4d",
                 }
@@ -104,6 +104,7 @@ const QrScanScreen = ({ navigation }) => {
             };
             const dateQR = date.toLocaleString("en-US", options);
             await AsyncStorage.setItem("passExpiry", dateQR);
+            await AsyncStorage.setItem("passExpiryRaw", `${dateRaw}`);
           } else {
             console.log("parsed date is not a number");
           }
@@ -141,7 +142,8 @@ const QrScanScreen = ({ navigation }) => {
           {
             id: 3,
             type: "success",
-            duration: 3500,
+            duration: 3000,
+            animationType: "zoom-in",
           }
         );
       } else {

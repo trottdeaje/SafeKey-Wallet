@@ -93,12 +93,12 @@ const Version = () => {
         style={[
           VersionStyle.container,
           {
-            marginBottom: "calc(0em + env(safe-area-inset-bottom))",
+            marginBottom: "env(safe-area-inset-bottom)",
             position: "sticky",
           },
         ]}
       >
-        <Text style={VersionStyle.text}>Version: 1.2.1</Text>
+        <Text style={VersionStyle.text}>Version: 1.2.3</Text>
         {showInstallBtn && !isInstalled() ? (
           <TouchableOpacity
             onPress={() => {
