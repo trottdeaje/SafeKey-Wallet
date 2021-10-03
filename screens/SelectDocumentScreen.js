@@ -53,12 +53,34 @@ const SelectDocument = ({ navigation }) => {
         PDF_QR_JS.decodeSinglePage(result.uri, pageNr, configs, recordcallback);
 
         function recordcallback(result) {
+          if (result.message === "Invalid PDF structure.") {
+            SetErrorInfo(
+              <View style={{ marginTop: 15 }}>
+                <Text
+                  style={[
+                    styles.text,
+                    { color: "#d71f2e", textAlign: "center" },
+                  ]}
+                >
+                  Invalid file type. Please select a valid SafeKey PDF file.
+                </Text>
+              </View>
+            );
+            SetFileIsLoading(false);
+            return;
+          }
+          console.log(result);
           // check if array is empty
           if (result.codes.length === 0) {
             console.error("No QR Found");
             SetErrorInfo(
               <View style={{ marginTop: 15 }}>
-                <Text style={styles.text}>
+                <Text
+                  style={[
+                    styles.text,
+                    { color: "#d71f2e", textAlign: "center" },
+                  ]}
+                >
                   SafeKey QR Code not detected. Please try again.
                 </Text>
               </View>
@@ -225,7 +247,12 @@ const SelectDocument = ({ navigation }) => {
             <Text
               style={[
                 styles.text,
-                { fontWeight: "bold", marginTop: 15, marginBottom: 15 },
+                {
+                  fontWeight: "bold",
+                  marginTop: 15,
+                  marginBottom: 15,
+                  textAlign: "center",
+                },
               ]}
             >
               Select your PDF Document
