@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     marginTop: 25,
     color: "#000",
+    textAlign: "center",
   },
   center: {
     display: "flex",
