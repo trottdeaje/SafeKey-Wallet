@@ -41,15 +41,28 @@ const QrScanScreen = ({ navigation }) => {
   });
 
   const handleBarCodeScanned = async (data) => {
-    const keywords = [":BM.KEY:", ":BM.VAX:"];
-    const keyRef = [":BM.KEY:"];
+    const keywords = [":BM.KEY:", ":BM.VAX:", "BM.CONTACTKEY"];
+    const keyRef = [":BM.KEY:", "BM.CONTACTKEY"];
     if (data !== null) {
       // Find keywords that match our array of items
       if (keywords.some((keyword) => data.includes(keyword))) {
         // Gets date from pass and checks to see if it's a number
         if (keyRef.some((keyword) => data.includes(keyword))) {
-          let indexStartKey = data.indexOf(":", 130);
+          // Get QR Keyword
+          let indexStart = data.indexOf(":");
+          indexStart += 1;
+          let indexEnd = data.indexOf(":", indexStart + 1);
+          let keywordKey = data.substring(indexStart, indexEnd);
+          // set start index for expiry date
+          let indexStartKey =
+            keywordKey === "BM.KEY"
+              ? data.indexOf(":", 130)
+              : keywordKey === "BM.CONTACTKEY"
+              ? data.indexOf(":", 142)
+              : null;
+          // set end index for expiry date
           let indexEndKey = data.indexOf("/");
+          // get expiry date value
           let keywordBMKey = data.substring(indexStartKey, indexEndKey);
           let keywordBMKeyFinal = keywordBMKey.slice(1);
           if (!isNaN(keywordBMKeyFinal)) {
@@ -72,7 +85,11 @@ const QrScanScreen = ({ navigation }) => {
                     }}
                   >
                     <Text style={[styles.bold, { color: "#fff" }]}>
-                      This SafeKey has expired
+                      {keywordKey === "BM.KEY"
+                        ? "This SafeKey has expired"
+                        : keywordKey === "BM.CONTACTKEY"
+                        ? "This Contact Tracing Key has expired"
+                        : ""}
                     </Text>
                     <Text
                       style={[
@@ -103,8 +120,14 @@ const QrScanScreen = ({ navigation }) => {
               day: "numeric",
             };
             const dateQR = date.toLocaleString("en-US", options);
-            await AsyncStorage.setItem("passExpiry", dateQR);
-            await AsyncStorage.setItem("passExpiryRaw", `${dateRaw}`);
+            await AsyncStorage.setItem(
+              keywordKey === "BM.KEY" ? "passExpiry" : "contactExpiry",
+              dateQR
+            );
+            await AsyncStorage.setItem(
+              keywordKey === "BM.KEY" ? "passExpiryRaw" : "contactExpiryRaw",
+              `${dateRaw}`
+            );
           } else {
             console.log("parsed date is not a number");
           }
@@ -118,34 +141,46 @@ const QrScanScreen = ({ navigation }) => {
         await AsyncStorage.setItem(keywordKey, data);
         setScanned(true);
         Analytics.logEvent("DocumentScanned", {
-          type: keywordKey === "BM.KEY" ? "SafeKey" : "Vaccination Certificate",
+          type:
+            keywordKey === "BM.KEY"
+              ? "SafeKey"
+              : keywordKey === "BM.VAX"
+              ? "Vaccination Certificate"
+              : keywordKey === "BM.CONTACTKEY"
+              ? "Contact Tracing Key"
+              : "",
           purpose: "User has scanned their SafeKey QR code.",
         });
         // Navigate to a different screen while passing the parsed QR data with it
         navigation.dispatch(
           CommonActions.reset({ index: 0, routes: [{ name: "QR List" }] })
         );
+        //
+        //
+        //
         toast.show(
-          keywordKey === "BM.KEY" ? (
-            <View>
-              <Text style={[styles.bold, { color: "#fff" }]}>
-                SafeKey Added
-              </Text>
-            </View>
-          ) : (
-            <View>
-              <Text style={[styles.bold, { color: "#fff" }]}>
-                Vaccination Certificate Added
-              </Text>
-            </View>
-          ),
+          <View>
+            <Text style={[styles.bold, { color: "#fff" }]}>
+              {keywordKey === "BM.KEY"
+                ? "SafeKey added"
+                : keywordKey === "BM.VAX"
+                ? "Vaccination Certificate added"
+                : keywordKey === "BM.CONTACTKEY"
+                ? "Contact Tracing Key added"
+                : ""}
+            </Text>
+          </View>,
+
           {
             id: 3,
             type: "success",
-            duration: 3000,
+            duration: 3500,
             animationType: "zoom-in",
           }
         );
+        //
+        //
+        //
       } else {
         setInvalidQR(true);
       }
