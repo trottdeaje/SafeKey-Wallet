@@ -20,12 +20,15 @@ import {
   ChildButton,
 } from "react-floating-button-menu";
 import { Ionicons, Feather } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const QrList = ({ navigation }) => {
   const [vax, setVax] = useState(undefined);
   const [passkey, setPasskey] = useState(undefined);
+  const [contactKey, setContactKey] = useState(undefined);
   const [passExists, setPassExists] = useState();
   const [vaxExists, setVaxExists] = useState();
+  const [contactKeyExists, setContactKeyExists] = useState();
   const [isOpen, setIsOpen] = useState(false);
 
   const [assets] = useAssets([
@@ -44,6 +47,22 @@ const QrList = ({ navigation }) => {
 
   const noPassExists = () => {
     setPassExists(false);
+  };
+  const noContactKeyExists = () => {
+    setContactKeyExists(false);
+  };
+
+  // if one or two variables are true then return true. If three variables are true then return false.
+  const checkExists = () => {
+    if (
+      vaxExists === true &&
+      passExists === true &&
+      contactKeyExists === true
+    ) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   useEffect(() => {
@@ -81,10 +100,31 @@ const QrList = ({ navigation }) => {
   }, [vaxExists]);
 
   useEffect(() => {
-    if (vaxExists === false && passExists === false) {
+    try {
+      async function getContactKey() {
+        const value = await AsyncStorage.getItem("BM.CONTACTKEY");
+        if (value !== null) {
+          setContactKey(value);
+          setContactKeyExists(true);
+        } else {
+          setContactKeyExists(false);
+        }
+      }
+      getContactKey();
+    } catch (e) {
+      alert(e);
+    }
+  }, [contactKeyExists]);
+
+  useEffect(() => {
+    if (
+      vaxExists === false &&
+      passExists === false &&
+      contactKeyExists === false
+    ) {
       navigation.dispatch(StackActions.replace("Home"));
     }
-  }, [vaxExists, passExists]);
+  }, [vaxExists, passExists, contactKeyExists]);
 
   return (
     <View style={{ backgroundColor: "#fff", flex: 1 }}>
@@ -126,8 +166,8 @@ const QrList = ({ navigation }) => {
               <Text style={{ fontSize: 14, color: "#919191" }}>{"\u2022"}</Text>
               <Text style={qrlist.infoPoints}>
                 {" "}
-                SafeKey Wallet currently supports two QR Codes. Vaccination
-                Certificate & SafeKey.
+                SafeKey Wallet currently supports three QR Codes. Vaccination
+                Certificate, SafeKey and Contact Tracing Key.
               </Text>
               {"\n"}
               <Text style={{ display: "block" }}> </Text>
@@ -152,7 +192,6 @@ const QrList = ({ navigation }) => {
             <QrTile
               name="Vaccination Certificate"
               type="BM.VAX"
-              holder="John Doe"
               removeItem={noVaxExists}
               infoScreen="Vaccination Notice"
               data={vax}
@@ -164,7 +203,6 @@ const QrList = ({ navigation }) => {
             <QrTile
               name="SafeKey"
               type="BM.KEY"
-              holder="John Doe"
               removeItem={noPassExists}
               infoScreen="SafeKey Notice"
               data={passkey}
@@ -172,8 +210,19 @@ const QrList = ({ navigation }) => {
           ) : (
             <Text></Text>
           )}
+          {contactKeyExists ? (
+            <QrTile
+              name="Contact Tracing Key"
+              type="BM.CONTACTKEY"
+              removeItem={noContactKeyExists}
+              infoScreen="Contact Tracing Notice"
+              data={contactKey}
+            />
+          ) : (
+            <Text></Text>
+          )}
 
-          {!vaxExists ^ !passExists ? (
+          {checkExists() ? (
             <View
               style={{
                 position: "absolute",
