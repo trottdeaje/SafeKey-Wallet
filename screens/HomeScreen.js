@@ -10,6 +10,7 @@ import Version from "../components/Version/Version";
 const HomeScreen = ({ navigation }) => {
   const [passExists, setPassExists] = useState(null);
   const [vaxExists, setVaxExists] = useState(null);
+  const [contactKeyExists, setContactKeyExists] = useState(null);
 
   const [assets] = useAssets([
     require("../assets/images/qr-background.svg"),
@@ -49,10 +50,30 @@ const HomeScreen = ({ navigation }) => {
   }, [vaxExists]);
 
   useEffect(() => {
-    if (vaxExists === true || passExists === true) {
+    try {
+      async function getContactKey() {
+        const value = await AsyncStorage.getItem("BM.CONTACTKEY");
+        if (value !== null) {
+          setContactKeyExists(true);
+        } else {
+          setContactKeyExists(false);
+        }
+      }
+      getContactKey();
+    } catch (e) {
+      alert(e);
+    }
+  }, [contactKeyExists]);
+
+  useEffect(() => {
+    if (
+      vaxExists === true ||
+      passExists === true ||
+      contactKeyExists === true
+    ) {
       navigation.dispatch(StackActions.replace("QR List"));
     }
-  }, [vaxExists, passExists]);
+  }, [vaxExists, passExists, contactKeyExists]);
 
   return (
     <>
