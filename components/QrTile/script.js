@@ -9,6 +9,10 @@ export const removeValue = async (value) => {
       await AsyncStorage.removeItem("no_notice_safekey");
     } else if (value === "BM.VAX") {
       await AsyncStorage.removeItem("no_notice_vaccine");
+    } else if (value === "BM.CONTACTKEY") {
+      await AsyncStorage.removeItem("contactExpiry");
+      await AsyncStorage.removeItem("contactExpiryRaw");
+      await AsyncStorage.removeItem("no_notice_contact");
     }
     await AsyncStorage.removeItem(value);
     // Send analytics when user deletes safekey
