@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "SafeKey Wallet",
+    "slug": "safekey-wallet",
+    "version": "1.0.0",
+    "owner": "hummer07",
+    "orientation": "portrait",
+    "scheme": "safekey",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png"
+    },
+    "description": "Conveniently access your SafeKey from your own digital wallet.",
+    "primaryColor": "#ffffff",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "startUrl": ".",
+      "scope": "/",
+      "description": "Conveniently access your SafeKey from your own digital wallet.",
+      "backgroundColor": "#ffffff",
+      "themeColor": "#ffffff",
+      "config": {
+        "firebase": {
+          "appId": "1:702794384577:web:230b825c75a78104358040",
+          "apiKey": "AIzaSyCWxSnKpr5xzJXBNBCfq20gMUMu0Ze1X20",
+          "projectId": "safekey-wallet",
+          "measurementId": "G-4JXT2H3B2H"
+        }
+      }
+    }
+  }
+}
