@@ -11,22 +11,11 @@ const QrTile = (props) => {
   const [tileBgTwo, setTileBgTwo] = useState("#000");
   const [screenSkipSafeKey, setScreenSkipSafeKey] = useState(false);
   const [screenSkipVaccineKey, setScreenSkipVaccineKey] = useState(false);
+  const [screenSkipContactKey, setScreenSkipContactKey] = useState(false);
   const [passExpired, setPassExpired] = useState(false);
+  const [contactKeyExpired, setContactKeyExpired] = useState(false);
 
-  useEffect(() => {
-    try {
-      async function getSafekeyNoticeStatus() {
-        const value = await AsyncStorage.getItem("no_notice_safekey");
-        if (value !== null) {
-          setScreenSkipSafeKey(value);
-        }
-      }
-      getSafekeyNoticeStatus();
-    } catch (e) {
-      alert(e);
-    }
-  }, []);
-
+  // Get safekey expiry date. set passExpired state to true if expired
   useEffect(() => {
     try {
       async function getSafekeyExpiry() {
@@ -52,6 +41,48 @@ const QrTile = (props) => {
 
   useEffect(() => {
     try {
+      async function getContactKeyExpiry() {
+        const contactKeyExpiry = await AsyncStorage.getItem("contactExpiryRaw");
+        if (contactKeyExpiry !== null) {
+          const formatYmd = (date) => date.toISOString().slice(0, 10);
+          let todayDate = Date.parse(formatYmd(new Date()));
+          let dayInMilliSeconds = 86400000;
+          if (contactKeyExpiry > todayDate) {
+            setContactKeyExpired(false);
+          } else if (contactKeyExpiry == todayDate) {
+            setContactKeyExpired(false);
+          } else if (
+            parseInt(contactKeyExpiry) + dayInMilliSeconds <=
+            todayDate
+          ) {
+            setContactKeyExpired(true);
+          }
+        }
+      }
+      getContactKeyExpiry();
+    } catch (e) {
+      alert(e);
+    }
+  }, []);
+
+  // Get safekey notice screen skip boolean
+  useEffect(() => {
+    try {
+      async function getSafekeyNoticeStatus() {
+        const value = await AsyncStorage.getItem("no_notice_safekey");
+        if (value !== null) {
+          setScreenSkipSafeKey(value);
+        }
+      }
+      getSafekeyNoticeStatus();
+    } catch (e) {
+      alert(e);
+    }
+  }, []);
+
+  // Get Vaccination notice screen skip boolean
+  useEffect(() => {
+    try {
       async function getVaccineNoticeStatus() {
         const value = await AsyncStorage.getItem("no_notice_vaccine");
         if (value !== null) {
@@ -59,6 +90,21 @@ const QrTile = (props) => {
         }
       }
       getVaccineNoticeStatus();
+    } catch (e) {
+      alert(e);
+    }
+  }, []);
+
+  // Get Contact Tracing notice screen skip boolean
+  useEffect(() => {
+    try {
+      async function getContactNoticeStatus() {
+        const value = await AsyncStorage.getItem("no_notice_contact");
+        if (value !== null) {
+          setScreenSkipContactKey(value);
+        }
+      }
+      getContactNoticeStatus();
     } catch (e) {
       alert(e);
     }
@@ -85,6 +131,9 @@ const QrTile = (props) => {
     } else if (props.name == "SafeKey") {
       setTileBg("#5299e1");
       setTileBgTwo("#66b0ff");
+    } else if (props.name == "Contact Tracing Key") {
+      setTileBg("#f9b939");
+      setTileBgTwo("#f9b939");
     }
   }, [props.name]);
 
@@ -127,6 +176,13 @@ const QrTile = (props) => {
                 navigation.navigate("Vaccination Notice");
               }
             }
+            if (props.infoScreen === "Contact Tracing Notice") {
+              if (screenSkipContactKey) {
+                navigation.navigate("Contact Tracing Key QR");
+              } else if (!screenSkipContactKey) {
+                navigation.navigate("Contact Tracing Notice");
+              }
+            }
           }}
         >
           <View style={{ paddingVertical: 15 }}>
@@ -139,7 +195,9 @@ const QrTile = (props) => {
               }}
             >
               {props.name}{" "}
-              {props.name === "SafeKey" && passExpired === true ? (
+              {(props.name === "SafeKey" && passExpired === true) ||
+              (props.name === "Contact Tracing Key" &&
+                contactKeyExpired === true) ? (
                 <TouchableOpacity
                   onPress={() => {
                     Linking.openURL("https://www.gov.bm/safekey");
