@@ -15,8 +15,10 @@ import QrScanScreen from "./screens/QrScanScreen";
 import QrListScreen from "./screens/QrListScreen";
 import PassInfoScreen from "./screens/NoticeSafeKeyScreen";
 import VaxInfoScreen from "./screens/NoticeVaccinationScreen";
+import ContactInfoScreen from "./screens/NoticeContactTracingScreen";
 import ShowQrScreenPass from "./screens/ShowSafeKeyQrScreen";
 import ShowQrScreenVax from "./screens/ShowVaccinationQrScreen";
+import ShowQrScreenContact from "./screens/ShowContactKeyQRScreen";
 import NotFound from "./screens/NotFoundScreen";
 import NoCamera from "./screens/NoCameraScreen";
 import Loading from "./screens/Loading";
@@ -56,8 +58,10 @@ export default function App() {
       "QR List": "wallet",
       "SafeKey Notice": "safekey-notice",
       "Vaccination Notice": "certificate-notice",
+      "Contact Tracing Notice": "contact-tracing-notice",
       "SafeKey QR": "safekey",
       "Vaccination Certificate QR": "vaccination-certificate",
+      "Contact Tracing Key QR": "contact-tracing-key",
       NoCamera: "NoCamera",
       NotFound: "*",
     },
@@ -223,6 +227,18 @@ export default function App() {
               }}
             />
             <Stack.Screen
+              name="Contact Tracing Notice"
+              component={ContactInfoScreen}
+              options={{
+                headerTitleAlign: "center",
+                headerTitle: "Notice",
+                headerTitleStyle: {
+                  alignSelf: "center",
+                  fontFamily: "OpenSans_600SemiBold",
+                },
+              }}
+            />
+            <Stack.Screen
               options={{ headerTitle: "Show QR", headerTitleAlign: "center" }}
               name="SafeKey QR"
               component={ShowQrScreenPass}
@@ -231,6 +247,11 @@ export default function App() {
               options={{ headerTitle: "Show QR", headerTitleAlign: "center" }}
               name="Vaccination Certificate QR"
               component={ShowQrScreenVax}
+            />
+            <Stack.Screen
+              options={{ headerTitle: "Show QR", headerTitleAlign: "center" }}
+              name="Contact Tracing Key QR"
+              component={ShowQrScreenContact}
             />
             <Stack.Screen
               options={{
