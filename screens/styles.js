@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     flexWrap: "wrap",
     width: "100%",
-    marginBottom: 120,
+    marginBottom: 10,
   },
   btn: {
     width: "100%",
@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
   QrHeader: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 30,
-    marginTop: 25,
+    marginBottom: 20,
+    marginTop: 20,
     color: "#000",
     textAlign: "center",
   },
