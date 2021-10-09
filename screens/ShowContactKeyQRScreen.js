@@ -64,7 +64,7 @@ const ShowQrContactKey = ({ navigation }) => {
                 styles.center,
                 {
                   borderWidth: 5,
-                  borderColor: "#f9b939",
+                  borderColor: "#66c45f",
                 },
               ]}
             >
