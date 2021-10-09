@@ -76,6 +76,17 @@
           "sizes": "192x192"
         }
       ]
+    },
+    {
+      "name": "Contact Tracing Key",
+      "description": "View your Contact Tracing Key",
+      "url": "/contact-tracing-key",
+      "icons": [
+        {
+          "src": "/pwa/shortcut/contact.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
