@@ -139,7 +139,7 @@ const QrList = ({ navigation }) => {
                 alignSelf: "center",
                 backgroundColor: "#f9f9f9",
                 padding: 20,
-                paddingBottom: 35,
+                paddingBottom: 20,
                 marginBottom: 25,
                 marginTop: 5,
                 width: "100%",
@@ -225,9 +225,8 @@ const QrList = ({ navigation }) => {
           {checkExists() ? (
             <View
               style={{
-                position: "absolute",
-                bottom: -60,
-                right: 20,
+                position: "sticky",
+                alignSelf: "flex-end",
               }}
             >
               <FloatingMenu
