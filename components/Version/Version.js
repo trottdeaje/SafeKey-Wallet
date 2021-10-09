@@ -98,7 +98,7 @@ const Version = () => {
           },
         ]}
       >
-        <Text style={VersionStyle.text}>Version: 1.2.4</Text>
+        <Text style={VersionStyle.text}>Version: 1.2.5</Text>
         {showInstallBtn && !isInstalled() ? (
           <TouchableOpacity
             onPress={() => {
