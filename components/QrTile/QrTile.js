@@ -132,8 +132,8 @@ const QrTile = (props) => {
       setTileBg("#5299e1");
       setTileBgTwo("#66b0ff");
     } else if (props.name == "Contact Tracing Key") {
-      setTileBg("#f9b939");
-      setTileBgTwo("#f9b939");
+      setTileBg("#66c45f");
+      setTileBgTwo("#81cf7d");
     }
   }, [props.name]);
 
