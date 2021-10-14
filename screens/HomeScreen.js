@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity, Image } from "react-native";
+import { Text, View, TouchableOpacity, Image, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackActions } from "@react-navigation/native";
 import Loading from "./Loading";
 import { styles } from "./styles";
 import { useAssets } from "expo-asset";
-import Version from "../components/Version/Version";
 
 const HomeScreen = ({ navigation }) => {
   const [passExists, setPassExists] = useState(null);
@@ -80,13 +79,9 @@ const HomeScreen = ({ navigation }) => {
       {!assets ? (
         <Loading />
       ) : (
-        <View
-          style={[
-            styles.container,
-            {
-              paddingBottom: 50,
-            },
-          ]}
+        <ScrollView
+          contentContainerStyle={styles.container}
+          style={{ backgroundColor: "#fff" }}
         >
           <View>
             <Image
@@ -145,9 +140,8 @@ const HomeScreen = ({ navigation }) => {
               Select Document
             </Text>
           </TouchableOpacity>
-        </View>
+        </ScrollView>
       )}
-      <Version />
     </>
   );
 };
