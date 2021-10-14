@@ -4,7 +4,7 @@ import { styles } from "../../screens/styles";
 import ModalComponent from "../Modal/Modal";
 import * as Analytics from "expo-firebase-analytics";
 
-const Version = () => {
+const Version = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [devicePlatform, setDevicePlatform] = useState(null);
   const [showInstallBtn, setShowInstallBtn] = useState(false);
@@ -41,6 +41,7 @@ const Version = () => {
   }, []);
 
   window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
     // Stash the event so it can be triggered later.
     window.deferredPrompt = event;
     // Update UI notify the user they can install the PWA
@@ -59,6 +60,15 @@ const Version = () => {
     promptEvent.prompt();
     // Log the result
     const result = await promptEvent.userChoice;
+    console.log("👍", "User choice:", result.outcome);
+
+    if (result.outcome === "accepted") {
+      Analytics.logEvent("AppInstalled", {
+        purpose: "User has installed PWA",
+      });
+    } else if (result.outcome === "dismissed") {
+      console.log("User cancelled home screen install");
+    }
     // Reset the deferred prompt variable, since
     // prompt() can only be called once.
     window.deferredPrompt = null;
@@ -70,9 +80,6 @@ const Version = () => {
     // Clear the deferredPrompt so it can be garbage collected
     window.deferredPrompt = null;
     // Sending analytics event to indicate successful install
-    Analytics.logEvent("AppInstalled", {
-      purpose: "User has installed PWA",
-    });
     console.log("PWA was installed");
   });
 
@@ -95,10 +102,12 @@ const Version = () => {
           {
             marginBottom: "env(safe-area-inset-bottom)",
             position: "sticky",
+            bottom: 0,
+            filter: props.brightness,
           },
         ]}
       >
-        <Text style={VersionStyle.text}>Version: 1.2.5</Text>
+        <Text style={VersionStyle.text}>Version: 1.2.6</Text>
         {showInstallBtn && !isInstalled() ? (
           <TouchableOpacity
             onPress={() => {
