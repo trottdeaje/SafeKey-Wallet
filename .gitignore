@@ -9,6 +9,8 @@ npm-debug.*
 *.orig.*
 oldfirebase.json
 app.json
+package-lock.json
 
 # macOS
 .DS_Store
+package-lock.json
