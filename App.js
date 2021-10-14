@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Image, Platform } from "react-native";
+import { View, Image } from "react-native";
 //  Import react-navigation
 import { NavigationContainer } from "@react-navigation/native";
-import {
-  createStackNavigator,
-  TransitionPresets,
-} from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 // Import Firebase
 import * as Analytics from "expo-firebase-analytics";
 // Importing the screens
@@ -36,12 +33,13 @@ import {
 import { ToastProvider } from "react-native-toast-notifications";
 // Importing Modal
 const Stack = createStackNavigator();
-
+import Version from "./components/Version/Version";
 import * as serviceWorkerRegistration from "./src/serviceWorkerRegistration";
 
 export default function App() {
   const [hasLoaded, setHasLoaded] = useState(false);
   const [hasQR, setHasQR] = useState(false);
+  const [screenName, setScreenName] = useState(undefined);
 
   let [fontsLoaded] = useFonts({
     OpenSans_400Regular,
@@ -97,10 +95,10 @@ export default function App() {
       {fontsLoaded && hasLoaded ? (
         <NavigationContainer
           ref={navigationRef}
-          onReady={() =>
-            (routeNameRef.current =
-              navigationRef.current.getCurrentRoute().name)
-          }
+          onReady={() => {
+            routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+            setScreenName(navigationRef.current.getCurrentRoute().name);
+          }}
           onStateChange={async () => {
             const previousRouteName = routeNameRef.current;
             const currentRouteName =
@@ -110,6 +108,11 @@ export default function App() {
               // https://docs.expo.io/versions/latest/sdk/firebase-analytics/
               // Change this line to use another Mobile analytics SDK
               await Analytics.setCurrentScreen(currentRouteName);
+              if (screenName === currentRouteName) {
+                return;
+              } else {
+                setScreenName(currentRouteName);
+              }
             }
 
             // Save the current route name for later comparison
@@ -138,19 +141,12 @@ export default function App() {
               name="Home"
               component={HomeScreen}
               options={{
-                ...TransitionPresets.ModalSlideFromBottomIOS,
                 headerTitleStyle: {
                   alignSelf: "flex-start",
                   fontFamily: "OpenSans_600SemiBold",
                 },
                 title: "SafeKey Wallet",
                 headerTitle: " SafeKey Wallet",
-                cardStyleInterpolator:
-                  Platform.OS === "ios"
-                    ? ({ current }) => ({
-                        cardStyle: { opacity: current.progress },
-                      })
-                    : undefined,
                 headerRight: () => (
                   <View
                     style={{
@@ -173,7 +169,6 @@ export default function App() {
               component={SelectDocumentScreen}
               options={{
                 title: "Select Document",
-                animationTypeForReplace: "pop",
                 headerTitleStyle: {
                   alignSelf: "flex-start",
                   fontFamily: "OpenSans_600SemiBold",
@@ -186,7 +181,6 @@ export default function App() {
               component={QrListScreen}
               options={{
                 title: "SafeKey Wallet",
-                animationTypeForReplace: "pop",
                 headerTitleStyle: {
                   alignSelf: "flex-start",
                   fontFamily: "OpenSans_600SemiBold",
@@ -272,6 +266,11 @@ export default function App() {
               component={NoCamera}
             />
           </Stack.Navigator>
+          {screenName === "Scan QR" ? (
+            <Version brightness={"brightness(0)"} />
+          ) : (
+            <Version />
+          )}
         </NavigationContainer>
       ) : (
         <Loading />
