@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { CommonActions } from "@react-navigation/native";
 import DetectRTC from "detectrtc";
-import Version from "../components/Version/Version";
 import { useAssets } from "expo-asset";
 import Loading from "./Loading";
 import { styles } from "./styles";
@@ -107,7 +106,6 @@ const NoCamera = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           </View>
-          <Version />
         </>
       )}
     </>
