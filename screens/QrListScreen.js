@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { styles } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAssets } from "expo-asset";
 import Loading from "./Loading";
 
-import Version from "../components/Version/Version";
 import QrTile from "../components/QrTile/QrTile";
 import { StackActions } from "@react-navigation/native";
 import {
@@ -127,7 +126,7 @@ const QrList = ({ navigation }) => {
   }, [vaxExists, passExists, contactKeyExists]);
 
   return (
-    <View style={{ backgroundColor: "#fff", flex: 1 }}>
+    <ScrollView style={styles.scrollStyle}>
       {!assets && !fontsLoaded ? (
         <Loading />
       ) : (
@@ -281,8 +280,7 @@ const QrList = ({ navigation }) => {
           )}
         </View>
       )}
-      <Version />
-    </View>
+    </ScrollView>
   );
 };
 const qrlist = StyleSheet.create({
