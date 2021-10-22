@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, Linking } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Linking,
+  ScrollView,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 import * as DocumentPicker from "expo-document-picker";
@@ -7,7 +14,6 @@ import { useToast } from "react-native-toast-notifications";
 import { styles } from "./styles";
 
 import { useAssets } from "expo-asset";
-import Version from "../components/Version/Version";
 import { PDF_QR_JS } from "pdf-qr";
 import { ClipLoader } from "react-spinners";
 import Loading from "./Loading";
@@ -18,7 +24,6 @@ const SelectDocument = ({ navigation }) => {
   const toast = useToast();
   const [assets] = useAssets([require("../assets/images/file-text.png")]);
   const [fileIsLoading, SetFileIsLoading] = useState(false);
-
   const PickDocument = async () => {
     try {
       let result = await DocumentPicker.getDocumentAsync({
@@ -256,7 +261,14 @@ const SelectDocument = ({ navigation }) => {
         <Loading />
       ) : (
         <>
-          <View style={styles.container}>
+          <ScrollView
+            contentContainerStyle={{
+              margin: "auto",
+              alignItems: "center",
+              paddingHorizontal: 20,
+            }}
+            style={[styles.scrollStyle]}
+          >
             <Text
               style={{
                 textAlign: "center",
@@ -292,7 +304,9 @@ const SelectDocument = ({ navigation }) => {
               style={[
                 styles.btn,
                 styles.shadow,
-                { backgroundColor: fileIsLoading ? "#1a73ef80" : "#1971ef" },
+                {
+                  backgroundColor: fileIsLoading ? "#1a73ef80" : "#1971ef",
+                },
               ]}
               onPress={PickDocument}
             >
@@ -320,8 +334,7 @@ const SelectDocument = ({ navigation }) => {
                 <View style={{ height: 38, backgroundColor: "#fff" }}></View>
               )}
             </Text>
-          </View>
-          <Version />
+          </ScrollView>
         </>
       )}
     </>
