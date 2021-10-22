@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -7,7 +6,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 20,
-    paddingBottom: 30,
   },
   containerTop: {
     flex: 1,
@@ -17,7 +15,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     paddingHorizontal: 20,
     paddingTop: 20,
-    flexWrap: "wrap",
     width: "100%",
     marginBottom: 10,
   },
@@ -89,6 +86,11 @@ const styles = StyleSheet.create({
     width: 55,
     height: 80,
     position: "absolute",
+  },
+  scrollStyle: {
+    backgroundColor: "#fff",
+    flex: 1,
+    marginVertical: "auto",
   },
 });
 
