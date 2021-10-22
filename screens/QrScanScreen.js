@@ -178,9 +178,6 @@ const QrScanScreen = ({ navigation }) => {
             animationType: "zoom-in",
           }
         );
-        //
-        //
-        //
       } else {
         setInvalidQR(true);
       }
@@ -215,6 +212,7 @@ const QrScanScreen = ({ navigation }) => {
             fontSize: 16,
             flex: 1,
             minHeight: 80,
+            marginBottom: 20,
           },
         ]}
       >
@@ -260,6 +258,7 @@ const QrScanScreen = ({ navigation }) => {
           width: "100%",
           flex: 1,
           justifyContent: "center",
+          marginTop: 20,
         }}
       >
         <TouchableOpacity
